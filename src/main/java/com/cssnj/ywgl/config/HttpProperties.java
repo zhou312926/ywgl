@@ -14,13 +14,13 @@ import org.springframework.stereotype.Component;
 public class HttpProperties {
 
     private String permit;
-    private String index;
     private String authc;
+    private String unauthorized;
+    private String index;
     private String home;
     private String login;
-    private String logout;
     private String success;
-    private String unauthorized;
+    private String logout;
 
     public String getPermit() {
         return permit;
@@ -30,20 +30,28 @@ public class HttpProperties {
         this.permit = permit;
     }
 
-    public String getIndex() {
-        return index;
-    }
-
-    public void setIndex(String index) {
-        this.index = index;
-    }
-
     public String getAuthc() {
         return authc;
     }
 
     public void setAuthc(String authc) {
         this.authc = authc;
+    }
+
+    public String getUnauthorized() {
+        return unauthorized;
+    }
+
+    public void setUnauthorized(String unauthorized) {
+        this.unauthorized = unauthorized;
+    }
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
     }
 
     public String getHome() {
@@ -62,14 +70,6 @@ public class HttpProperties {
         this.login = login;
     }
 
-    public String getLogout() {
-        return logout;
-    }
-
-    public void setLogout(String logout) {
-        this.logout = logout;
-    }
-
     public String getSuccess() {
         return success;
     }
@@ -78,11 +78,12 @@ public class HttpProperties {
         this.success = success;
     }
 
-    public String getUnauthorized() {
-        return unauthorized;
+    public String getLogout() {
+        return logout;
     }
 
-    public void setUnauthorized(String unauthorized) {
-        this.unauthorized = unauthorized;
+    public void setLogout(String logout) {
+        this.logout = logout;
     }
+
 }
