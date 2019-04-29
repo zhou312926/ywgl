@@ -90,7 +90,7 @@ public class YwjbService extends BaseService {
         params.put("offset", offset);
         params.put("rows", rows);
         List<YwjbVo> list = ywjbMapper.selectList(params);
-        jsonResponse.getData().put("count", 20);
+        jsonResponse.getData().put("count", count);
         jsonResponse.getData().put("list", list);
         return jsonResponse;
     }
