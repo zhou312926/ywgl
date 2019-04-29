@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      th:with="title='问题处理'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-row layui-col-space10">
+                        <div class="layui-col-md6">
+                            <label class="layui-form-label">标题</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="bt" maxlength="200" placeholder="请输入内容" autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-col-md6">
+                            <label class="layui-form-label">问题类型</label>
+                            <div class="layui-input-block">
+                                <select name="wtlx">
+                                    <option value="0">不限</option>
+                                    <option th:each="wtlx,wtlxStat : ${wtlxList}" th:if="${wtlxList!=null}"
+                                            th:value="${wtlx.dm}" th:utext="${wtlx.mc}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-col-md6">
+                            <label class="layui-form-label">应用系统</label>
+                            <div class="layui-input-block">
+                                <select name="yyxt" lay-filter="yyxt">
+                                    <option value="0">不限</option>
+                                    <option th:each="yyxt,yyxtStat : ${yyxtList}" th:if="${yyxtList!=null}"
+                                            th:value="${yyxt.dm}" th:utext="${yyxt.mc}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-col-md6">
+                            <label class="layui-form-label">业务模块</label>
+                            <div class="layui-input-block">
+                                <select name="ywmk" lay-filter="ywmk" lay-search="">
+                                    <option value="0">不限</option>
+                                    <option th:each="ywmk,ywmkStat : ${ywmkList}" th:if="${ywmkList!=null}"
+                                            th:value="${ywmk.dm}" th:utext="${ywmk.mc}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-col-md12">
+                            <div style="width:100%;margin:0 auto;text-align: center">
+                                <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="wtxx_search">
+                                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                                    查询
+                                </button>
+                                <button class="layui-btn layuiadmin-btn-useradmin" type="reset" id="wtxx_reset">
+                                    <i class="layui-icon layui-icon-refresh layuiadmin-button-btn"></i>
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-card-body">
+            <table id="tbl_facz" lay-filter="tbl_facz"></table>
+            <script type="text/html" id="tbl_facz_toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="refresh"><i
+                            class="layui-icon layui-icon-refresh-3"></i>刷新
+                    </button>
+                </div>
+            </script>
+            <script type="text/html" id="tbl_col_tool">
+                <shiro:hasPermission name="facz:query">
+                    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="read"><i
+                            class="layui-icon layui-icon-list"></i>查看</a>
+                </shiro:hasPermission>
+                <shiro:lacksPermission name="facz:query">
+                    <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                            class="layui-icon layui-icon-list"></i>查看</a>
+                </shiro:lacksPermission>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.extend({
+        index: 'lib/index'
+        , facz: 'ywfw/facz'
+    }).use(['index', 'facz']);
+</script>
+</body>
+</html>

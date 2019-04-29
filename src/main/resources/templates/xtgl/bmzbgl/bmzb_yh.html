@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org"
+      th:with="title='部门组别人员'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/css/form.css}" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px;">
+                <legend>部门信息</legend>
+            </fieldset>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 80px;">名称</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" id="id" th:value="${bmzbxx.id}">
+                    <input type="text" id="mc" name="mc" maxlength="48"
+                           placeholder="请输入内容" lay-verify="required"
+                           autocomplete="off" readonly
+                           class="layui-input" th:value="${bmzbxx.mc}">
+                </div>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px;">
+                <legend>人员信息</legend>
+            </fieldset>
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">姓名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="xm" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="yhxx_search">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                            查询
+                        </button>
+                        <button class="layui-btn layuiadmin-btn-useradmin" type="reset" id="yhxx_reset">
+                            <i class="layui-icon layui-icon-refresh layuiadmin-button-btn"></i>
+                            重置
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-card-body">
+            <table id="tbl_bmzbyh" lay-filter="tbl_bmzbyh"></table>
+            <script type="text/html" id="tbl_bmzbyh_toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="refresh"><i
+                            class="layui-icon layui-icon-refresh-3"></i>刷新
+                    </button>
+                </div>
+            </script>
+            <script type="text/html" id="tbl_col_tool">
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i
+                        class="layui-icon layui-icon-delete"></i>删除</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+</body>
+<script th:inline="none">
+    layui.extend({
+        index: 'lib/index',
+        cssnj: 'common/cssnj'
+    }).use(['index', 'admin', 'form', 'table', 'cssnj'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , form = layui.form
+            , table = layui.table
+            , cssnj = layui.cssnj;
+
+        table.render({
+            elem: '#tbl_bmzbyh'
+            , url: contextPath + '/xtgl/bmzbgl/loadYhxxs'
+            , method: 'post'
+            //, contentType: 'application/json'
+            , request: {
+                pageName: 'page',
+                limitName: 'limit'
+            }
+            , where: {
+                xm: $("input[name='xm']").val(),
+                id: $("#id").val()
+            }
+            , parseData: function (res) {
+                return {
+                    "code": res.code,
+                    "msg": res.msg,
+                    "count": res.data.count,
+                    "data": res.data.list
+                };
+            }
+            , title: ''
+            , toolbar: '#tbl_bmzbyh_toolbar'
+            , defaultToolbar: []
+            , cols: [[
+                {type: 'numbers', fixed: 'left'}
+                , {field: 'id', title: 'ID', sort: true, hide: false}
+                , {field: 'xm', title: '姓名', minWidth: 100, sort: true}
+                , {
+                    field: 'xb', title: '性别', templet: function (d) {
+                        switch (d.xb) {
+                            case 0:
+                                return '女';
+                                break;
+                            case 1:
+                                return '男';
+                                break;
+                            default:
+                                return '-';
+                        }
+                    }
+                }
+                , {field: 'yddh', title: '移动电话'}
+                , {field: 'gddh', title: '固定电话'}
+                , {field: 'dzyx', title: '电子邮箱'}
+                , {title: '操作', width: 80, align: 'center', fixed: 'right', toolbar: '#tbl_col_tool'}
+            ]]
+            , page: true
+            , limit: 10
+            , limits: [10, 15, 20]
+            , height: 'full-320'
+            , text: {none: '暂无相关数据'}
+        });
+
+        form.on('submit(yhxx_search)', function (data) {
+            table.reload('tbl_bmzbyh', {
+                where: {
+                    xm: $("input[name='xm']").val(),
+                    id: $("#id").val()
+                }
+            });
+            return false;
+        });
+        table.on('toolbar(tbl_bmzbyh)', function (obj) {
+            if (obj.event === 'refresh') {
+                table.reload('tbl_bmzbyh');
+            }
+        });
+        table.on('tool(tbl_bmzbyh)', function (obj) {
+            if (obj.event === 'del') {
+                cssnj.confirm("此操作仅会将人员从所在部门移除，并非真实删除人员信息", {
+                    yes: function (index) {
+                        cssnj.req({
+                            url: contextPath + '/xtgl/bmzbgl',
+                            data: JSON.stringify({
+                                handle: 'delBmzbyh',
+                                data: {yhId: obj.data.id, id: $("#id").val()}
+                            }),
+                            done: function (res) {
+                                table.reload('tbl_bmzbyh');
+                                cssnj.close(index);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+    });
+</script>
+</html>

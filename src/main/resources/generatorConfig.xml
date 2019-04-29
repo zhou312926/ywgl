@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--导入属性配置-->
+    <properties resource="application.properties"></properties>
+
+    <!-- 指定数据库驱动的jdbc驱动jar包的位置 -->
+    <classPathEntry
+            location="/Users/duq/.m2/repository/mysql/mysql-connector-java/8.0.13/mysql-connector-java-8.0.13.jar"/>
+
+    <!-- context 是逆向工程的主要配置信息 -->
+    <!-- id：起个名字 -->
+    <!-- targetRuntime：设置生成的文件适用于那个 mybatis 版本 -->
+    <context id="default" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+            <property name="searchString" value="Example$"/>
+            <property name="replaceString" value="Criteria"/>
+        </plugin>
+
+        <!--optional,旨在创建class时，对注释进行控制-->
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!--jdbc的数据库连接-->
+        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+        </jdbcConnection>
+
+        <!--非必须，类型处理器，在数据库类型和java类型之间的转换控制-->
+        <javaTypeResolver>
+            <!-- 默认情况下数据库中的 decimal，bigInt 在 Java 对应是 sql 下的 BigDecimal 类 -->
+            <!-- 不是 double 和 long 类型 -->
+            <!-- 使用常用的基本类型代替 sql 包下的引用类型 -->
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- targetPackage：生成的实体类所在的包 -->
+        <!-- targetProject：生成的实体类所在的硬盘位置 -->
+        <javaModelGenerator targetPackage="com.cssnj.ywgl.domain"
+                            targetProject="./src/main/java">
+            <!-- 是否允许子包 -->
+            <property name="enableSubPackages" value="false"/>
+            <!-- 是否对modal添加构造函数 -->
+            <property name="constructorBased" value="true"/>
+            <!-- 是否清理从数据库中查询出的字符串左右两边的空白字符 -->
+            <property name="trimStrings" value="true"/>
+            <!-- 建立modal对象是否不可改变 即生成的modal对象不会有setter方法，只有构造方法 -->
+            <property name="immutable" value="false"/>
+        </javaModelGenerator>
+
+        <!-- targetPackage 和 targetProject：生成的 mapper 文件的包和位置 -->
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject="./src/main/resources">
+            <!-- 针对数据库的一个配置，是否把 schema 作为字包名 -->
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!-- targetPackage 和 targetProject：生成的 interface 文件的包和位置 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.cssnj.ywgl.domain" targetProject="./src/main/java">
+            <!-- 针对 oracle 数据库的一个配置，是否把 schema 作为字包名 -->
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- 系统代码-->
+        <!--<table tableName="t_dm_xt_czlx"-->
+               <!--domainObjectName="xtdm.Czlx"-->
+               <!--enableInsert="true"-->
+               <!--enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableDeleteByPrimaryKey="true"-->
+               <!--selectByExampleQueryId="false"-->
+               <!--enableCountByExample="false"-->
+               <!--enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false"/>-->
+        <!--<table tableName="t_dm_xt_zhlx"-->
+               <!--domainObjectName="xtdm.Zhlx"-->
+               <!--enableInsert="true"-->
+               <!--enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableDeleteByPrimaryKey="true"-->
+               <!--selectByExampleQueryId="false"-->
+               <!--enableCountByExample="false"-->
+               <!--enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false"/>-->
+        <!--系统权限-->
+        <!--<table tableName="t_qx_yh_js" domainObjectName="xtqx.UserRole"/>-->
+        <!--<table tableName="t_qx_js_cd" domainObjectName="xtqx.RoleMenu"/>-->
+        <!--<table tableName="t_qx_js_gn" domainObjectName="xtqx.RolePermission"/>-->
+        <!--系统资源-->
+        <!--<table tableName="t_xt_js" domainObjectName="xtzy.Role"/>-->
+        <!--<table tableName="t_xt_gncd" domainObjectName="xtzy.Resource"/>-->
+        <!--<table tableName="t_xt_czrz" domainObjectName="xtzy.OperLog"/>-->
+        <!--<table tableName="t_xt_tzgg" domainObjectName="xtzy.Notice"/>-->
+        <!--用户-->
+        <!--<table tableName="t_xt_dlzh" domainObjectName="user.LoginAccount"/>-->
+        <!--<table tableName="t_xt_yhxx" domainObjectName="user.User"/>-->
+        <!--<table tableName="t_xt_yhxx_kz" domainObjectName="user.UserExtend"/>-->
+        <!--<table tableName="t_xt_yh_tzgg" domainObjectName="user.UserNotice"/>-->
+        <!--部门-->
+        <!--<table tableName="t_xt_bmzb" domainObjectName="dept.Dept"/>-->
+        <!-- 运维代码-->
+        <!--<table tableName="t_dm_yw_wtlx"-->
+               <!--domainObjectName="ywdm.Wtlx"-->
+               <!--enableInsert="true"-->
+               <!--enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableDeleteByPrimaryKey="true"-->
+               <!--selectByExampleQueryId="false"-->
+               <!--enableCountByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false"/>-->
+        <!--<table tableName="t_dm_yw_wtzt"-->
+               <!--domainObjectName="ywdm.Wtzt"-->
+               <!--enableInsert="true"-->
+               <!--enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableDeleteByPrimaryKey="true"-->
+               <!--selectByExampleQueryId="false"-->
+               <!--enableCountByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false"/>-->
+        <!--<table tableName="t_dm_yw_ywmk"-->
+               <!--domainObjectName="ywdm.Ywmk"-->
+               <!--enableInsert="true"-->
+               <!--enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableDeleteByPrimaryKey="true"-->
+               <!--selectByExampleQueryId="false"-->
+               <!--enableCountByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false"/>-->
+        <!--<table tableName="t_dm_yw_yyxt"-->
+               <!--domainObjectName="ywdm.Yyxt"-->
+               <!--enableInsert="true"-->
+               <!--enableSelectByPrimaryKey="true"-->
+               <!--enableUpdateByPrimaryKey="true"-->
+               <!--enableDeleteByPrimaryKey="true"-->
+               <!--selectByExampleQueryId="false"-->
+               <!--enableCountByExample="true"-->
+               <!--enableSelectByExample="true"-->
+               <!--enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false"/>-->
+        <!--运维服务-->
+        <!--<table tableName="t_yw_wtxx" domainObjectName="ywfw.Wtxx"/>-->
+        <!--<table tableName="t_yw_wtfj" domainObjectName="ywfw.Wtfj"/>-->
+        <!--<table tableName="t_yw_wthf" domainObjectName="ywfw.Wthf"/>-->
+        <!--<table tableName="t_yw_ywjb" domainObjectName="ywfw.Ywjb"/>-->
+        <!--技能考评-->
+        <!--<table tableName="t_kp_dsxx" domainObjectName="jnkp.Dsxx"/>-->
+        <!--<table tableName="t_kp_xsxx" domainObjectName="jnkp.Xsxx"/>-->
+        <!--<table tableName="t_kp_dsdp" domainObjectName="jnkp.Dsdp"/>-->
+    </context>
+</generatorConfiguration>

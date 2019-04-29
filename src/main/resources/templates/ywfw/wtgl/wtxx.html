@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" th:with="title='问题信息'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/css/template.css}" media="all">
+</head>
+<body>
+<div class="layui-form layui-fluid layadmin-maillist-fluid">
+    <div class="layadmin-contact-box">
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题</label>
+            <div class="layui-input-inline">
+                <input type="text" name="bt" maxlength="200" style="width: 400px;"
+                       placeholder="请输入内容" lay-verify="required|bt"
+                       autocomplete="off"
+                       class="layui-input" th:value="${wtxx.bt}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">问题类型</label>
+            <div class="layui-input-inline" style="width: 400px;">
+                <select name="wtlx" lay-filter="wtlx" lay-verify="required">
+                    <option value>请选择</option>
+                    <option th:each="wtlx,wtlxStat : ${wtlxList}" th:if="${wtlxList!=null}"
+                            th:value="${wtlx.dm}" th:utext="${wtlx.mc}" th:selected="${wtxx.wtlxDm==wtlx.dm}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">应用系统</label>
+            <div class="layui-input-inline" style="width: 400px;">
+                <select name="yyxt" lay-filter="yyxt" lay-verify="required">
+                    <option value>请选择</option>
+                    <option th:each="yyxt,yyxtStat : ${yyxtList}" th:if="${yyxtList!=null}"
+                            th:value="${yyxt.dm}" th:utext="${yyxt.mc}" th:selected="${wtxx.yyxtDm==yyxt.dm}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">业务模块</label>
+            <div class="layui-input-inline" style="width: 400px;">
+                <select name="ywmk" lay-filter="ywmk" lay-search="">
+                    <option value="0">不限</option>
+                    <option th:each="ywmk,ywmkStat : ${ywmkList}" th:if="${ywmkList!=null}"
+                            th:value="${ywmk.dm}" th:utext="${ywmk.mc}" th:selected="${wtxx.ywmkDm==ywmk.dm}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">详细描述</label>
+            <div class="layui-input-inline">
+            <textarea name="wtms" placeholder="请输入内容" lay-verify="required|wtms" maxlength="4000"
+                      style="width: 400px; height: 150px;resize:none"
+                      autocomplete="off" class="layui-textarea" th:text="${wtxx.ms}"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">问题状态</label>
+            <div class="layui-input-inline" style="width: 400px;">
+                <select name="wtzt" lay-filter="wtzt" lay-verify="required">
+                    <option value>请选择</option>
+                    <option th:each="wtzt,wtztStat : ${wtztList}" th:if="${wtztList!=null}"
+                            th:value="${wtzt.dm}" th:utext="${wtzt.mc}" th:selected="${wtxx.wtztDm==wtzt.dm}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">处理方案</label>
+            <div class="layui-input-inline">
+            <textarea name="clfa" placeholder="请输入内容" lay-verify="clfa" maxlength="4000"
+                      style="width: 400px; height: 150px;resize:none" th:disabled="${wtxx.wtztDm ne '04'}"
+                      autocomplete="off" class="layui-textarea" th:text="${wtxx.clfa}"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <input type="button" lay-submit lay-filter="wtxx_back_submit" id="wtxx_back_submit" value="确定">
+            <input type="hidden" name="id" th:value="${wtxx.id}"/>
+        </div>
+    </div>
+</div>
+<script>
+    layui.extend({
+        index: 'lib/index',
+        cssnj: 'common/cssnj'
+    }).use(['index', 'form', 'cssnj'], function () {
+        var $ = layui.$, form = layui.form, admin = layui.admin, cssnj = layui.cssnj;
+        var loadYwmk = function (yyxtDm) {
+            if (yyxtDm == undefined || yyxtDm == null || yyxtDm == "") {
+                return;
+            }
+            cssnj.req({
+                url: contextPath + '/ywfw/wtgl',
+                data: JSON.stringify({
+                    handle: 'queryYwmkDm',
+                    data: {
+                        yyxtDm: yyxtDm
+                    }
+                }),
+                done: function (res) {
+                    var optionStr = "<option value='0'>不限</option>";
+                    $.each(res.data, function (i, item) {
+                        optionStr += "<option value='" + item.dm + "' >" + item.mc + "</option>";
+                    });
+                    $("select[name='ywmk']").html(optionStr);
+                    form.render('select');
+                }
+            });
+        };
+        loadYwmk($("select[name='yyxt']").val());
+        form.on('select(yyxt)', function (data) {
+            loadYwmk(data.value);
+        });
+        form.on('select(wtzt)', function (data) {
+            var disabled = true;
+            if (data.value == "04") {
+                disabled = false;
+            } else {
+                $("textarea[name='clfa']").val("");
+            }
+            $("textarea[name='clfa']").attr("disabled", disabled);
+        });
+
+        form.verify({
+            bt: function (value, item) {
+                if (item.value.trim().length < 20) {
+                    return '标题至少20个字描述';
+                }
+            }, wtms: function (value, item) {
+                if (item.value.trim().length < 20) {
+                    return '详细描述至少20个字描述';
+                }
+            }, clfa: function (value, item) {
+                if ($("select[name='wtzt']").val() == "04") {
+                    if (item.value == "") {
+                        return '已解决问题处理方案不能为空';
+                    } else if (item.value.trim().length < 20) {
+                        return '处理方案至少20个字描述';
+                    }
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

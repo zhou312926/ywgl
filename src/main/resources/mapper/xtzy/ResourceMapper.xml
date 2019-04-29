@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cssnj.ywgl.domain.xtzy.ResourceMapper">
+    <resultMap id="BaseResultMap" type="com.cssnj.ywgl.domain.xtzy.Resource">
+        <constructor>
+            <idArg column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="qxbs" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="mc" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="jc" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="url" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="lx" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="dkfs" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="icon" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="xh" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="sjgncd_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="yxbz" javaType="java.lang.String" jdbcType="CHAR"/>
+        </constructor>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, qxbs, mc, jc, url, lx, dkfs, icon, xh, sjgncd_id, yxbz
+  </sql>
+    <select id="selectByExample" parameterType="com.cssnj.ywgl.domain.xtzy.ResourceCriteria" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_xt_gncd
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_xt_gncd
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_xt_gncd
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.cssnj.ywgl.domain.xtzy.ResourceCriteria">
+        delete from t_xt_gncd
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.cssnj.ywgl.domain.xtzy.Resource">
+    insert into t_xt_gncd (id, qxbs, mc, 
+      jc, url, lx, dkfs, 
+      icon, xh, sjgncd_id, 
+      yxbz)
+    values (#{id,jdbcType=VARCHAR}, #{qxbs,jdbcType=VARCHAR}, #{mc,jdbcType=VARCHAR}, 
+      #{jc,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{lx,jdbcType=CHAR}, #{dkfs,jdbcType=CHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{xh,jdbcType=INTEGER}, #{sjgncdId,jdbcType=VARCHAR}, 
+      #{yxbz,jdbcType=CHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.cssnj.ywgl.domain.xtzy.Resource">
+        insert into t_xt_gncd
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="qxbs != null">
+                qxbs,
+            </if>
+            <if test="mc != null">
+                mc,
+            </if>
+            <if test="jc != null">
+                jc,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="lx != null">
+                lx,
+            </if>
+            <if test="dkfs != null">
+                dkfs,
+            </if>
+            <if test="icon != null">
+                icon,
+            </if>
+            <if test="xh != null">
+                xh,
+            </if>
+            <if test="sjgncdId != null">
+                sjgncd_id,
+            </if>
+            <if test="yxbz != null">
+                yxbz,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="qxbs != null">
+                #{qxbs,jdbcType=VARCHAR},
+            </if>
+            <if test="mc != null">
+                #{mc,jdbcType=VARCHAR},
+            </if>
+            <if test="jc != null">
+                #{jc,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="lx != null">
+                #{lx,jdbcType=CHAR},
+            </if>
+            <if test="dkfs != null">
+                #{dkfs,jdbcType=CHAR},
+            </if>
+            <if test="icon != null">
+                #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="xh != null">
+                #{xh,jdbcType=INTEGER},
+            </if>
+            <if test="sjgncdId != null">
+                #{sjgncdId,jdbcType=VARCHAR},
+            </if>
+            <if test="yxbz != null">
+                #{yxbz,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.cssnj.ywgl.domain.xtzy.ResourceCriteria" resultType="java.lang.Long">
+        select count(*) from t_xt_gncd
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update t_xt_gncd
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.qxbs != null">
+                qxbs = #{record.qxbs,jdbcType=VARCHAR},
+            </if>
+            <if test="record.mc != null">
+                mc = #{record.mc,jdbcType=VARCHAR},
+            </if>
+            <if test="record.jc != null">
+                jc = #{record.jc,jdbcType=VARCHAR},
+            </if>
+            <if test="record.url != null">
+                url = #{record.url,jdbcType=VARCHAR},
+            </if>
+            <if test="record.lx != null">
+                lx = #{record.lx,jdbcType=CHAR},
+            </if>
+            <if test="record.dkfs != null">
+                dkfs = #{record.dkfs,jdbcType=CHAR},
+            </if>
+            <if test="record.icon != null">
+                icon = #{record.icon,jdbcType=VARCHAR},
+            </if>
+            <if test="record.xh != null">
+                xh = #{record.xh,jdbcType=INTEGER},
+            </if>
+            <if test="record.sjgncdId != null">
+                sjgncd_id = #{record.sjgncdId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.yxbz != null">
+                yxbz = #{record.yxbz,jdbcType=CHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update t_xt_gncd
+        set id = #{record.id,jdbcType=VARCHAR},
+        qxbs = #{record.qxbs,jdbcType=VARCHAR},
+        mc = #{record.mc,jdbcType=VARCHAR},
+        jc = #{record.jc,jdbcType=VARCHAR},
+        url = #{record.url,jdbcType=VARCHAR},
+        lx = #{record.lx,jdbcType=CHAR},
+        dkfs = #{record.dkfs,jdbcType=CHAR},
+        icon = #{record.icon,jdbcType=VARCHAR},
+        xh = #{record.xh,jdbcType=INTEGER},
+        sjgncd_id = #{record.sjgncdId,jdbcType=VARCHAR},
+        yxbz = #{record.yxbz,jdbcType=CHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cssnj.ywgl.domain.xtzy.Resource">
+        update t_xt_gncd
+        <set>
+            <if test="qxbs != null">
+                qxbs = #{qxbs,jdbcType=VARCHAR},
+            </if>
+            <if test="mc != null">
+                mc = #{mc,jdbcType=VARCHAR},
+            </if>
+            <if test="jc != null">
+                jc = #{jc,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="lx != null">
+                lx = #{lx,jdbcType=CHAR},
+            </if>
+            <if test="dkfs != null">
+                dkfs = #{dkfs,jdbcType=CHAR},
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="xh != null">
+                xh = #{xh,jdbcType=INTEGER},
+            </if>
+            <if test="sjgncdId != null">
+                sjgncd_id = #{sjgncdId,jdbcType=VARCHAR},
+            </if>
+            <if test="yxbz != null">
+                yxbz = #{yxbz,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cssnj.ywgl.domain.xtzy.Resource">
+    update t_xt_gncd
+    set qxbs = #{qxbs,jdbcType=VARCHAR},
+      mc = #{mc,jdbcType=VARCHAR},
+      jc = #{jc,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      lx = #{lx,jdbcType=CHAR},
+      dkfs = #{dkfs,jdbcType=CHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      xh = #{xh,jdbcType=INTEGER},
+      sjgncd_id = #{sjgncdId,jdbcType=VARCHAR},
+      yxbz = #{yxbz,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <select id="selectByExampleWithRowbounds" parameterType="com.cssnj.ywgl.domain.xtzy.ResourceCriteria"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_xt_gncd
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectForList" resultType="com.cssnj.ywgl.vo.xtzy.ResourceVo">
+        SELECT id, qxbs, mc, jc, url, CASE WHEN lx = '0' THEN '目录' WHEN lx = '1' THEN '菜单' WHEN lx = '2' THEN '功能' END
+        lx, CASE WHEN dkfs = '0' THEN '主窗口标签页' WHEN dkfs = '1' THEN '当前窗口' WHEN dkfs = '2' THEN '新窗口' END dkfs, xh,
+        icon, sjgncd_id sjgncdId, yxbz
+        FROM t_xt_gncd
+        ORDER BY sjgncdId, xh
+        <!--WHERE 1=1-->
+        <!--<if test="lx!=null">-->
+        <!--and lx=#{lx}-->
+        <!--</if>-->
+        <!--<foreach collection="list" item="lx" index="index" open="(" close=")" separator=",">-->
+        <!--#{lx}-->
+        <!--</foreach>-->
+
+    </select>
+
+    <select id="selectForEdit" resultType="com.cssnj.ywgl.vo.xtzy.ResourceVo">
+       SELECT id, qxbs, mc, jc, url,  lx,  dkfs, xh, icon, sjgncd_id sjgncdId, yxbz,'true' open FROM t_xt_gncd WHERE lx!='2' ORDER BY sjgncdId, xh
+    </select>
+    <select id="selectForJsfp" resultType="com.cssnj.ywgl.vo.xtzy.ResourceVo">
+        SELECT
+          id,
+          qxbs,
+          mc,
+          jc,
+          url,
+          lx,
+          dkfs,
+          xh,
+          icon,
+          sjgncd_id        sjgncdid,
+          yxbz,
+          'true'           open,
+          CASE WHEN t.lx = '0'
+            THEN 'true'
+          ELSE 'false' END  chkDisabled,
+          CASE WHEN EXISTS(SELECT 1
+                           FROM t_qx_js_cd a
+                           WHERE a.gncd_id = t.id
+                                 AND a.js_id = #{jsId,jdbcType=VARCHAR})
+                    OR EXISTS(SELECT 1
+                              FROM t_qx_js_gn a
+                              WHERE a.gncd_id = t.id
+                                    AND a.js_id = #{jsId,jdbcType=VARCHAR})
+            THEN 'true'
+          ELSE 'false' END checked
+        FROM t_xt_gncd t
+        WHERE yxbz = 'Y'
+        ORDER BY sjgncdid, xh
+    </select>
+</mapper>

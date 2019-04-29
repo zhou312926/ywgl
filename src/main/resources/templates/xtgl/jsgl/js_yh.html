@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org"
+      th:with="title='角色授权用户'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/plugin/zTree_v3/css/metroStyle/metroStyle.css}" media="all">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/plugin/zTree_v3/css/myzTree.css}" media="all">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/css/form.css}" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px;">
+                <legend>角色信息</legend>
+            </fieldset>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 80px;">名称</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" id="id" th:value="${jsxx.id}">
+                    <input type="text" id="mc" name="mc" maxlength="48"
+                           placeholder="请输入内容" lay-verify="required"
+                           autocomplete="off" readonly
+                           class="layui-input" th:value="${jsxx.mc}">
+                </div>
+            </div>
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px;">
+                <legend>用户信息</legend>
+            </fieldset>
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">姓名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="xm" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">部门</label>
+                        <div class="layui-input-block">
+                            <input type="hidden" id="bmzbId" name="bmzbId"/>
+                            <input type="text" id="bmzb" name="bmzb" placeholder="请输入内容" autocomplete="off"
+                                   readonly
+                                   class="layui-input">
+                        </div>
+                        <div id="bmzbContent" class="bmzbContent"
+                             style="display:none; position: fixed;z-index: 999;margin-top: 10px;border: 1px solid #e6e6e6;background: #fff;width:260px;height:160px;overflow-y:scroll;overflow-x:auto;">
+                            <ul id="bmzb_tree" class="ztree" style="margin-top:0; width:160px;"></ul>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="yhxx_search">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                            查询
+                        </button>
+                        <button class="layui-btn layuiadmin-btn-useradmin" type="reset" id="yhxx_reset">
+                            <i class="layui-icon layui-icon-refresh layuiadmin-button-btn"></i>
+                            重置
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-card-body">
+            <table id="tbl_jsyh" lay-filter="tbl_jsyh"></table>
+            <script type="text/html" id="tbl_jsyh_toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="refresh"><i
+                            class="layui-icon layui-icon-refresh-3"></i>刷新
+                    </button>
+                    <button class="layui-btn layui-btn-sm" lay-event="add"><i
+                            class="layui-icon layui-icon-add-1"></i>新增
+                    </button>
+                </div>
+            </script>
+            <script type="text/html" id="tbl_col_tool">
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i
+                        class="layui-icon layui-icon-delete"></i>删除</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+</body>
+<script th:src="@{/cssnjadmin/plugin/zTree_v3/js/jquery-1.4.4.min.js}"></script>
+<script th:src="@{/cssnjadmin/plugin/zTree_v3/js/jquery.ztree.core.js}"></script>
+<script th:inline="none">
+    layui.extend({
+        index: 'lib/index',
+        cssnj: 'common/cssnj'
+    }).use(['index', 'admin', 'form', 'table', 'cssnj'], function () {
+        var admin = layui.admin
+            , form = layui.form
+            , table = layui.table
+            , cssnj = layui.cssnj;
+
+        table.render({
+            elem: '#tbl_jsyh'
+            , url: contextPath + '/xtgl/jsgl/loadYsqYhxxs'
+            , method: 'post'
+            //, contentType: 'application/json'
+            , request: {
+                pageName: 'page',
+                limitName: 'limit'
+            }
+            , where: {
+                xm: $("input[name='xm']").val(),
+                bmzbId: $("input[name='bmzbId']").val(),
+                id: $("#id").val()
+            }
+            , parseData: function (res) {
+                return {
+                    "code": res.code,
+                    "msg": res.msg,
+                    "count": res.data.count,
+                    "data": res.data.list
+                };
+            }
+            , title: ''
+            , toolbar: '#tbl_jsyh_toolbar'
+            , defaultToolbar: []
+            , cols: [[
+                {type: 'numbers', fixed: 'left'}
+                , {field: 'id', title: 'ID', sort: true, hide: false}
+                , {field: 'xm', title: '姓名', minWidth: 100, sort: true}
+                , {
+                    field: 'xb', title: '性别', templet: function (d) {
+                        switch (d.xb) {
+                            case 0:
+                                return '女';
+                                break;
+                            case 1:
+                                return '男';
+                                break;
+                            default:
+                                return '-';
+                        }
+                    }
+                }
+                , {field: 'bmzbMc', title: '部门'}
+                , {title: '操作', width: 120, align: 'center', fixed: 'right', toolbar: '#tbl_col_tool'}
+            ]]
+            , page: true
+            , limit: 10
+            , limits: [10, 15, 20]
+            , height: 'full-320'
+            , text: {none: '暂无相关数据'}
+        });
+
+        var onClick = function onClick(e, treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("bmzb_tree"),
+                nodes = zTree.getSelectedNodes();
+            if (nodes.length > 0) {
+                $("#bmzb").attr("value", nodes[0].mc);
+                $("#bmzbId").attr("value", nodes[0].id);
+            }
+            hideBmzbs();
+        }, showBmzbs = function showMenu() {
+            var bmzbObj = $("#bmzb");
+            var bmzbOffset = $("#bmzb").offset();
+            var bmzbContent = $("#bmzbContent");
+            bmzbContent.css({
+                left: bmzbOffset.left + "px",
+                top: bmzbOffset.top + bmzbObj.outerHeight() + "px"
+            }).slideDown("fast");
+
+            $("body").bind("mousedown", onBodyDown);
+        }, hideBmzbs = function hideMenu() {
+            $("#bmzbContent").fadeOut("fast");
+            $("body").unbind("mousedown", onBodyDown);
+        }, onBodyDown = function onBodyDown(event) {
+            if (!(event.target.id == "bmzb" || event.target.id == "bmzbContent" || $(event.target).parents("#bmzbContent").length > 0)) {
+                hideBmzbs();
+            }
+        }, setting = {
+            view: {
+                dblClickExpand: false
+            }, data: {
+                key: {
+                    name: "mc",
+                    url: "xUrl"
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "sjbmzbId",
+                    rootPId: null
+                }
+            }, callback: {
+                onClick: onClick
+            }
+        }, loadBmzbs = function () {
+            cssnj.req({
+                url: contextPath + '/xtgl/yhgl',
+                data: JSON.stringify({
+                    handle: 'loadBmzbs'
+                }),
+                done: function (res) {
+                    $.fn.zTree.init($("#bmzb_tree"), setting, res.data.list);
+                }
+            });
+        };
+        loadBmzbs();
+        $('#bmzb').bind('click', function () {
+            showBmzbs();
+        });
+
+        $('#yhxx_reset').bind('click', function () {
+            $("#bmzbId").val("");
+            var treeObj = $.fn.zTree.getZTreeObj("bmzb_tree"),
+                nodes = treeObj.getSelectedNodes();
+            if (nodes.length > 0) {
+                treeObj.cancelSelectedNode(nodes[0]);
+            }
+        });
+
+        form.on('submit(yhxx_search)', function (data) {
+            table.reload('tbl_jsyh', {
+                where: {
+                    xm: $("input[name='xm']").val(),
+                    bmzbId: $("input[name='bmzbId']").val(),
+                    id: $("#id").val()
+                }
+            });
+            return false;
+        });
+
+
+        table.on('toolbar(tbl_jsyh)', function (obj) {
+            var id = $("#id").val();
+            if (obj.event === 'add') {
+                cssnj.window("新增用户", contextPath + '/xtgl/jsgl/js_yh_add?id=' + id, {
+                    width: '768px',
+                    height: '690px',
+                    btn: ['确定', '取消'],
+                    yes: function (index, layero) {
+                        var iframeWindow = window['layui-layer-iframe' + index]
+                            , submitID = 'yhxx_back_submit'
+                            , submit = layero.find('iframe').contents().find('#' + submitID);
+                        iframeWindow.layui.form.on('submit(' + submitID + ')', function (form_data) {
+                            var checkStatus = iframeWindow.layui.table.checkStatus('tbl_yhxx')
+                                , chkItems = checkStatus.data, value = "", label = "";
+                            for (var i = 0, l = chkItems.length; i < l; i++) {
+                                value += chkItems[i].id + ",";
+                                label += chkItems[i].xm + ",";
+
+                            }
+                            if (value.length > 0) {
+                                value = value.substring(0, value.length - 1);
+                                label = label.substring(0, label.length - 1);
+                            } else {
+                                cssnj.alert("请至少选择一位待授权用户");
+                                return;
+                            }
+                            var tips = "授权角色：" + $("#mc").val() + "<br>授权用户：" + label;
+                            cssnj.confirm(tips, {
+                                yes: function () {
+                                    cssnj.req({
+                                        url: contextPath + '/xtgl/jsgl',
+                                        data: JSON.stringify({
+                                            handle: 'saveJsyh',
+                                            data: {
+                                                jsyh: value, id: $("#id").val()
+                                            }
+                                        }),
+                                        done: function (res) {
+                                            table.reload('tbl_jsyh');
+                                            cssnj.close(index);
+                                        }
+                                    });
+                                }
+                            })
+                        });
+                        submit.trigger('click');
+                    }
+                });
+            } else if (obj.event === 'refresh') {
+                table.reload('tbl_jsyh');
+            }
+        });
+
+        table.on('tool(tbl_jsyh)', function (obj) {
+            if (obj.event === 'del') {
+                cssnj.confirm("确定删除", {
+                    yes: function (index) {
+                        cssnj.req({
+                            url: contextPath + '/xtgl/jsgl',
+                            data: JSON.stringify({
+                                handle: 'delJsyh',
+                                data: {yhId: obj.data.id, id: $("#id").val()}
+                            }),
+                            done: function (res) {
+                                table.reload('tbl_jsyh');
+                                cssnj.close(index);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+    });
+</script>
+</html>

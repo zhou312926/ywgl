@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header(links,scripts)">
+    <meta charset="UTF-8">
+    <title>
+        <th:block th:text="${title+' - 南京中软'}"/>
+    </title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <link type="image/x-icon" rel="shortcut icon" th:href="@{/favicon.ico}"/>
+    <link rel="stylesheet" th:href="@{/cssnjadmin/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/css/admin.css}" media="all">
+
+    <th:block th:if="${links!=null}">
+        <th:block th:replace="${links}"/>
+    </th:block>
+
+    <script th:src="@{/cssnjadmin/layui/layui.js}"></script>
+
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script th:inline="javascript">
+
+        /*<![CDATA[*/
+
+        var contextPath = /*[[${#httpServletRequest.getContextPath()}]]*/;
+
+        /*]]>*/
+
+        layui.config({
+            version: true,
+            base: contextPath + '/cssnjadmin/'
+        });
+
+    </script>
+
+    <th:block th:if="${scripts!=null}">
+        <th:block th:replace="${scripts}"/>
+    </th:block>
+
+
+</head>
+<body>
+
+</body>
+</html>

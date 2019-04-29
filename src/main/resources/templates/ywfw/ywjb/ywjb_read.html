@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" th:with="title='运维脚本详情'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/css/template.css}" media="all">
+</head>
+<body>
+
+<div class="layui-fluid layadmin-message-fluid">
+    <div class="layui-row">
+        <div class="layui-col-md12" style="padding-bottom: 20px;">
+            <div class="layui-form">
+                <div class="layui-form-item layui-form-text">
+                    <p class="message-text" style="font-size: 18px;font-weight: bold;" th:utext="${ywjb.bt}"></p>
+                    <p class="message-text" th:text="${ywjb.ms}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12 layadmin-homepage-list-imgtxt message-content" style="padding-bottom:35px;">
+            <div class="media-body" style="margin-bottom:0px;">
+                <pre class="layui-code" th:text="${ywjb.jbnr}">
+                </pre>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.extend({
+        index: 'lib/index',
+        cssnj: 'common/cssnj'
+    }).use(['index', 'form', 'code', 'cssnj'], function () {
+        layui.code({
+            title: '脚本',
+            about: false
+        });
+    });
+</script>
+</body>
+</html>

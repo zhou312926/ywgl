@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" th:with="title='主页'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-body" style="padding-top: 20px;">
+                            <div id="wtxx_wjj" class="layadmin-dataview"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-body" style="padding-top: 20px;">
+                            <div id="wtxx_xz" class="layadmin-dataview"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-body" style="padding-top: 20px;">
+                            <div id="ywxt_fb" class="layadmin-dataview"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-body" style="padding-top: 20px;">
+                            <div id="wtlx_fb" class="layadmin-dataview"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="layui-col-md12">-->
+        <!--<div class="layui-row layui-col-space15">-->
+        <!--<div class="layui-col-md6">-->
+        <!--<div class="layui-card">-->
+        <!--<div class="layui-card-header">效果报告</div>-->
+        <!--<div class="layui-card-body layadmin-takerates">-->
+        <!--<div class="layui-progress" lay-showPercent="yes">-->
+        <!--<h3>转化率（日同比 28% <span class="layui-edge layui-edge-top" lay-tips="增长"-->
+        <!--lay-offset="-15"></span>）-->
+        <!--</h3>-->
+        <!--<div class="layui-progress-bar" lay-percent="65%"></div>-->
+        <!--</div>-->
+        <!--<div class="layui-progress" lay-showPercent="yes">-->
+        <!--<h3>签到率（日同比 11% <span class="layui-edge layui-edge-bottom" lay-tips="下降"-->
+        <!--lay-offset="-15"></span>）</h3>-->
+        <!--<div class="layui-progress-bar" lay-percent="32%"></div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="layui-col-md6">-->
+        <!--<div class="layui-card">-->
+        <!--<div class="layui-card-header">实时监控</div>-->
+        <!--<div class="layui-card-body layadmin-takerates">-->
+        <!--<div class="layui-progress" lay-showPercent="yes">-->
+        <!--<h3>CPU使用率</h3>-->
+        <!--<div class="layui-progress-bar" lay-percent="58%"></div>-->
+        <!--</div>-->
+        <!--<div class="layui-progress" lay-showPercent="yes">-->
+        <!--<h3>内存占用率</h3>-->
+        <!--<div class="layui-progress-bar layui-bg-red" lay-percent="90%"></div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>
+<script>
+    layui.extend({
+        index: 'lib/index'
+        , console: 'home/console'
+    }).use(['index', 'console']);
+</script>
+</body>
+</html>
+

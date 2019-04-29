@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org"
+      th:with="title='问题处理'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">汇总日期</label>
+                        <div class="layui-input-block" style="width: 100px;">
+                            <input type="text" class="layui-input" id="hzrqq" name="hzrqq" lay-verify="date"
+                                   placeholder="yyyy-MM-dd" readonly
+                                   autocomplete="off" th:value="${hzrqq}">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="width: 14px;">至</label>
+                        <div class="layui-input-block" style="width: 100px;margin-left: 55px;">
+                            <input type="text" class="layui-input" id="hzrqz" name="hzrqz" lay-verify="date"
+                                   placeholder="yyyy-MM-dd" readonly
+                                   autocomplete="off" th:value="${hzrqz}">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">工作量起</label>
+                        <div class="layui-input-block" style="width: 100px;">
+                            <input type="text" class="layui-input" id="gzlq" name="gzlq" lay-verify="gzlq|gzlqz"
+                                   placeholder="不限" maxlength="2"
+                                   autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="width: 14px;">至</label>
+                        <div class="layui-input-block" style="width: 100px;margin-left: 55px;">
+                            <input type="text" class="layui-input" id="gzlz" name="gzlz" lay-verify="gzlz|gzlqz"
+                                   placeholder="不限" maxlength="2"
+                                   autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="hz_search">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                            查询
+                        </button>
+                        <button class="layui-btn layuiadmin-btn-useradmin" type="reset"
+                                id="hz_reset">
+                            <i class="layui-icon layui-icon-refresh layuiadmin-button-btn"></i>
+                            重置
+                        </button>
+                    </div>
+                </div>
+                <!--<div class="layui-form-item">-->
+                <!--<div class="layui-inline">-->
+                <!--<label class="layui-form-label">汇总日期起</label>-->
+                <!--<div class="layui-input-block">-->
+                <!--<input type="text" class="layui-input" id="hzrqq" name="hzrqq" lay-verify="date"-->
+                <!--placeholder="yyyy-MM-dd" style="width: 100px;" readonly-->
+                <!--autocomplete="off" th:value="${hzrqq}">-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="layui-inline">-->
+                <!--<label class="layui-form-label">汇总日期止</label>-->
+                <!--<div class="layui-input-block">-->
+                <!--<input type="text" class="layui-input" id="hzrqz" name="hzrqz" lay-verify="date"-->
+                <!--placeholder="yyyy-MM-dd" style="width: 100px;" readonly-->
+                <!--autocomplete="off" th:value="${hzrqz}">-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="layui-inline">-->
+                <!--<label class="layui-form-label">工作量起</label>-->
+                <!--<div class="layui-input-block">-->
+                <!--<input type="text" class="layui-input" id="gzlq" name="gzlq" lay-verify="gzlq|gzlqz"-->
+                <!--placeholder="不限" maxlength="2"-->
+                <!--autocomplete="off" style="width: 100px;">-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="layui-inline">-->
+                <!--<label class="layui-form-label">工作量止</label>-->
+                <!--<div class="layui-input-block">-->
+                <!--<input type="text" class="layui-input" id="gzlz" name="gzlz" lay-verify="gzlz|gzlqz"-->
+                <!--placeholder="不限" maxlength="2"-->
+                <!--autocomplete="off" style="width: 100px;">-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="layui-inline">-->
+                <!--<button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="hz_search">-->
+                <!--<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>-->
+                <!--查询-->
+                <!--</button>-->
+                <!--<button class="layui-btn layuiadmin-btn-useradmin" type="reset"-->
+                <!--id="hz_reset">-->
+                <!--<i class="layui-icon layui-icon-refresh layuiadmin-button-btn"></i>-->
+                <!--重置-->
+                <!--</button>-->
+                <!--</div>-->
+                <!--</div>-->
+            </form>
+        </div>
+        <div class="layui-card-body">
+            <table id="tbl_ywgzlhz" lay-filter="tbl_ywgzlhz"></table>
+            <script type="text/html" id="tbl_ywgzlhz_toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="refresh"><i
+                            class="layui-icon layui-icon-refresh-3"></i>刷新
+                    </button>
+                </div>
+            </script>
+            <script type="text/html" id="tbl_col_tool">
+                <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="mx"><i
+                        class="layui-icon layui-icon-list"></i>查看</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.extend({
+        index: 'lib/index'
+        , ywgzlhz: 'cxtj/ywgzlhz'
+    }).use(['index', 'ywgzlhz']);
+</script>
+</body>
+</html>

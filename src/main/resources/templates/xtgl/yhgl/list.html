@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      th:with="title='用户管理'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/css/template.css}" media="all">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/plugin/zTree_v3/css/metroStyle/metroStyle.css}" media="all">
+    <!--<link rel="stylesheet" th:href="@{/cssnjadmin/plugin/zTree_v3/css/myzTree.css}" media="all">-->
+    <link rel="stylesheet" th:href="@{/cssnjadmin/css/form.css}" media="all">
+</head>
+<body>
+
+<div class="layui-fluid layadmin-maillist-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md3">
+            <div class="layadmin-contact-box">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>部门信息</legend>
+                </fieldset>
+                <div id="bmzbContent" class="bmzbContent"
+                     style="margin:0 auto;height:100%;overflow-y:scroll;overflow-x:auto;">
+                    <ul id="bmzb_tree" class="ztree" style="margin-top:0; width:160px;"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md9">
+            <div class="layadmin-contact-box">
+                <div class="layui-card">
+                    <fieldset class="layui-elem-field layui-field-title">
+                        <legend>用户信息</legend>
+                    </fieldset>
+                    <form class="layui-form" action="">
+                        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">姓名</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="xm" placeholder="请输入内容" autocomplete="off"
+                                               class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">部门</label>
+                                    <div class="layui-input-block">
+                                        <input type="hidden" id="bmzbId" name="bmzbId"/>
+                                        <input type="text" id="bmzb" name="bmzb" placeholder="请输入内容" autocomplete="off"
+                                               readonly
+                                               class="layui-input">
+                                    </div>
+                                    <!--<div id="bmzbContent" class="bmzbContent"-->
+                                    <!--style="display:none; position: fixed;z-index: 999;margin-top: 10px;border: 1px solid #e6e6e6;background: #fff;width:260px;height:160px;overflow-y:scroll;overflow-x:auto;">-->
+                                    <!--<ul id="bmzb_tree" class="ztree" style="margin-top:0; width:160px;"></ul>-->
+                                    <!--</div>-->
+                                </div>
+                                <div class="layui-inline">
+                                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit
+                                            lay-filter="yhxx_search">
+                                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                                        查询
+                                    </button>
+                                    <button class="layui-btn layuiadmin-btn-useradmin" type="reset" id="yhxx_reset">
+                                        <i class="layui-icon layui-icon-refresh layuiadmin-button-btn"></i>
+                                        重置
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="layui-card-body">
+                        <table id="tbl_yhgl" lay-filter="tbl_yhgl"></table>
+                        <script type="text/html" id="tbl_yhgl_toolbar">
+                            <div class="layui-btn-container">
+                                <button class="layui-btn layui-btn-sm" lay-event="refresh"><i
+                                        class="layui-icon layui-icon-refresh-3"></i>刷新
+                                </button>
+                                <shiro:hasPermission name="yhgl:edit">
+                                    <button class="layui-btn layui-btn-sm" lay-event="add"><i
+                                            class="layui-icon layui-icon-add-1"></i>新增
+                                    </button>
+                                </shiro:hasPermission>
+                                <shiro:lacksPermission name="yhgl:edit">
+                                    <button class="layui-btn layui-btn-sm layui-btn-disabled"><i
+                                            class="layui-icon layui-icon-add-1"></i>新增
+                                    </button>
+                                </shiro:lacksPermission>
+                            </div>
+                        </script>
+                        <script type="text/html" id="tbl_col_tool">
+                            <shiro:hasPermission name="yhgl:edit">
+                                <a class="layui-btn layui-btn layui-btn-xs" lay-event="edit"><i
+                                        class="layui-icon layui-icon-edit"></i>编辑</a>
+                            </shiro:hasPermission>
+                            <shiro:lacksPermission name="yhgl:edit">
+                                <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                                        class="layui-icon layui-icon-edit"></i>编辑</a>
+                            </shiro:lacksPermission>
+                            <shiro:hasPermission name="yhgl:sqjs">
+                                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="sqjs"><i
+                                        class="layui-icon layui-icon-user"></i>角色</a>
+                            </shiro:hasPermission>
+                            <shiro:lacksPermission name="yhgl:sqjs">
+                                <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                                        class="layui-icon layui-icon-user"></i>角色</a>
+                            </shiro:lacksPermission>
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/cssnjadmin/plugin/zTree_v3/js/jquery-1.4.4.min.js}"></script>
+<script th:src="@{/cssnjadmin/plugin/zTree_v3/js/jquery.ztree.core.js}"></script>
+<script>
+    layui.extend({
+        index: 'lib/index'
+        , yhgl: 'xtgl/yhgl'
+    }).use(['index', 'yhgl']);
+</script>
+</body>
+</html>

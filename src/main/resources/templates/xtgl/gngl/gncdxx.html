@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" th:with="title='功能菜单信息'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/css/template.css}" media="all">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/plugin/zTree_v3/css/metroStyle/metroStyle.css}" media="all">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/plugin/zTree_v3/css/myzTree.css}" media="all">
+</head>
+<body>
+
+<div class="layui-form layui-fluid layadmin-maillist-fluid">
+    <div class="layadmin-contact-box">
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="mc" maxlength="48" style="width: 400px;"
+                       placeholder="请输入内容" lay-verify="required"
+                       autocomplete="off"
+                       class="layui-input" th:value="${gncd.mc}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">简称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="jc" maxlength="18" style="width: 400px;"
+                       placeholder="请输入内容"
+                       autocomplete="off"
+                       class="layui-input" th:value="${gncd.jc}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-inline" style="width: 400px;">
+                <select name="lx" lay-filter="lx" lay-verify="required">
+                    <option value>请选择</option>
+                    <option value="0" th:selected="${gncd.lx eq'0'}">目录</option>
+                    <option value="1" th:selected="${gncd.lx eq'1'}">菜单</option>
+                    <option value="2" th:selected="${gncd.lx eq'2'}">功能</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">地址</label>
+            <div class="layui-input-inline">
+                <input type="text" name="url" maxlength="98" style="width: 400px;"
+                       placeholder="请输入内容"
+                       autocomplete="off"
+                       class="layui-input" th:value="${gncd.url}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限标识</label>
+            <div class="layui-input-inline">
+                <input type="text" name="qxbs" maxlength="18" style="width: 400px;"
+                       placeholder="请输入内容"
+                       autocomplete="off"
+                       class="layui-input" th:value="${gncd.qxbs}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">打开方式</label>
+            <div class="layui-input-inline" style="width: 400px;">
+                <select name="dkfs" lay-filter="dkfs">
+                    <option value>无</option>
+                    <option value="0" th:selected="${gncd.dkfs eq'0'}">主窗口标签页</option>
+                    <option value="1" th:selected="${gncd.dkfs eq'1'}">本窗口</option>
+                    <option value="2" th:selected="${gncd.dkfs eq'2'}">新窗口</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图标</label>
+            <div class="layui-input-inline">
+                <input type="text" name="icon" maxlength="98" style="width: 400px;"
+                       placeholder="请输入内容"
+                       autocomplete="off"
+                       class="layui-input" th:value="${gncd.icon}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">序号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="xh" maxlength="4" style="width: 400px;"
+                       placeholder="请输入内容"
+                       autocomplete="off"
+                       class="layui-input" th:value="${gncd.xh}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级菜单</label>
+            <div class="layui-input-inline">
+                <input type="hidden" id="sjgncdId" name="sjgncdId" th:value="${gncd.sjgncdId}"/>
+                <input type="text" id="sjgncd" name="sjgncd" maxlength="50" style="width: 400px;"
+                       placeholder="请输入内容" lay-verify="required" readonly
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+            <div id="menuContent" class="menuContent"
+                 style="display:none; position: absolute;z-index: 99;margin-bottom: 10px;border: 1px solid #e6e6e6;background: #fff;width:400px;height:160px;overflow-y:scroll;overflow-x:auto;">
+                <ul id="menu_tree" class="ztree" style="margin-top:0; width:160px;"></ul>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="hidden" id="yxbz" name="yxbz" th:value="${gncd.yxbz==null?'N':gncd.yxbz}">
+                <input type="checkbox" lay-skin="switch" lay-filter="switch_zt" lay-text="有效|无效"
+                       th:checked="${gncd.yxbz eq'Y'}">
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <input type="button" lay-submit lay-filter="gncd_back_submit" id="gncd_back_submit" value="确定">
+            <input type="hidden" name="id" th:value="${gncd.id}"/>
+        </div>
+    </div>
+</div>
+<script th:src="@{/cssnjadmin/plugin/zTree_v3/js/jquery-1.4.4.min.js}"></script>
+<script th:src="@{/cssnjadmin/plugin/zTree_v3/js/jquery.ztree.core.js}"></script>
+
+<script>
+    layui.extend({
+        index: 'lib/index',
+        cssnj: 'common/cssnj'
+    }).use(['index', 'form', 'cssnj'], function () {
+        var admin = layui.admin
+            , form = layui.form
+            , table = layui.table
+            , cssnj = layui.cssnj;
+
+
+        var beforeClick = function beforeClick(treeId, treeNode) {
+            //var check = (treeNode && !treeNode.isParent);
+            // if (!check) return;
+            //return check;
+        }, onClick = function onClick(e, treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("menu_tree"),
+                nodes = zTree.getSelectedNodes(),
+                label = "", value = "";
+            // if (treeNode.isParent) {
+            //     zTree.expandNode(treeNode);
+            //     return false;
+            // }
+            nodes.sort(function compare(a, b) {
+                return a.id - b.id;
+            });
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                label += nodes[i].mc + ",";
+                value += nodes[i].id + ",";
+            }
+            if (label.length > 0) {
+                label = label.substring(0, label.length - 1);
+                value = value.substring(0, value.length - 1);
+            }
+            $("#sjgncd").attr("value", label);
+            $("#sjgncdId").attr("value", value);
+            hideMenu();
+        }, showMenu = function showMenu() {
+            var sjgncdObj = $("#sjgncd");
+            var sjgncdOffset = $("#sjgncd").offset();
+            var menuContent = $("#menuContent");
+            menuContent.css({
+                left: sjgncdOffset.left + "px",
+                top: sjgncdOffset.top - menuContent.outerHeight() - 10 + "px"
+            }).slideDown("fast");
+
+            $("body").bind("mousedown", onBodyDown);
+        }, hideMenu = function hideMenu() {
+            $("#menuContent").fadeOut("fast");
+            $("body").unbind("mousedown", onBodyDown);
+        }, onBodyDown = function onBodyDown(event) {
+            if (!(event.target.id == "sjgncd" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length > 0)) {
+                hideMenu();
+            }
+        }, setting = {
+            view: {
+                dblClickExpand: false
+            }, data: {
+                key: {
+                    name: "mc",
+                    url: "xUrl"
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "sjgncdId",
+                    rootPId: null
+                }
+            }, callback: {
+                beforeClick: beforeClick,
+                onClick: onClick
+            }
+        }, loadGncds = function () {
+            cssnj.req({
+                url: contextPath + '/xtgl/gngl',
+                data: JSON.stringify({
+                    handle: 'loadGncds'
+                }),
+                done: function (res) {
+                    var zTree = $.fn.zTree.init($("#menu_tree"), setting, res.data.list);
+                    // $("#menu_tree").zTree(setting, res.data.list);
+                    var menuIds = $("#sjgncdId").val().split(',');
+                    for (var i = 0; i < menuIds.length; i++) {
+                        var node = zTree.getNodeByParam("id", menuIds[i], null);
+                        if (node != null) {
+                            //zTree.checkNode(node, true);
+                            //$("#sjgncd").val(node.mc);
+                            zTree.selectNode(node);
+                            zTree.setting.callback.onClick(null, zTree.setting.treeId, node);
+                        }
+                    }
+                }
+            });
+        };
+        loadGncds();
+        $('#sjgncd').bind('click', function () {
+            showMenu();
+        });
+
+        form.on('switch(switch_zt)', function (data) {
+            if (this.checked) {
+                $("#yxbz").val("Y");
+            } else {
+                $("#yxbz").val("N")
+            }
+        });
+        // var $ = layui.$, form = layui.form, admin = layui.admin, cssnj = layui.cssnj;
+        // form.on('select(yyxt)', function (data) {
+        //     cssnj.req({
+        //         url: contextPath + '/ywfw/ywmk',
+        //         data: JSON.stringify({
+        //             handle: 'load',
+        //             data: {
+        //                 yyxtDm: data.value
+        //             }
+        //         }),
+        //         done: function (res) {
+        //             var optionStr = "<option value='0'>不限</option>";
+        //             $.each(res.data.ywmkList, function (i, item) {
+        //                 optionStr += "<option value='" + item.dm + "' >" + item.mc + "</option>";
+        //             });
+        //             $("select[name='ywmk']").html(optionStr);
+        //             form.render('select');
+        //         }
+        //     });
+        // });
+    });
+</script>
+</body>
+</html>

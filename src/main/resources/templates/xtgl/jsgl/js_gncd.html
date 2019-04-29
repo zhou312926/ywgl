@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" th:with="title='角色分配功能菜单'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/plugin/zTree_v3/css/metroStyle/metroStyle.css}" media="all">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/plugin/zTree_v3/css/myzTree.css}" media="all">
+</head>
+<body>
+<div class="layui-form">
+    <div class="layui-fluid">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>角色信息</legend>
+                </fieldset>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">角色名称</label>
+                    <div class="layui-input-inline">
+                        <input type="hidden" id="id" name="id" th:value="${jsxx.id}">
+                        <input type="text" id="xm" name="mc" maxlength="48"
+                               placeholder="请输入内容" lay-verify="required"
+                               autocomplete="off" readonly
+                               class="layui-input" th:value="${jsxx.mc}">
+                    </div>
+                </div>
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>功能菜单</legend>
+                </fieldset>
+                <div class="layui-form-item">
+                    <input type="hidden" id="gncd_cd" name="gncd_cd">
+                    <input type="hidden" id="gncd_gn" name="gncd_gn">
+                    <div id="gncdContent" class="gncdContent"
+                         style="margin:0 auto;border: 1px solid #e6e6e6;background: #fff;width:480px;height:330px;overflow-y:scroll;overflow-x:auto;">
+                        <ul id="gncd_tree" class="ztree" style="margin-top:0; width:160px;"></ul>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <input type="button" lay-submit lay-filter="jsgncd_back_submit" id="jsgncd_back_submit" value="确定">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script th:src="@{/cssnjadmin/plugin/zTree_v3/js/jquery-1.4.4.min.js}"></script>
+<script th:src="@{/cssnjadmin/plugin/zTree_v3/js/jquery.ztree.core.js}"></script>
+<script th:src="@{/cssnjadmin/plugin/zTree_v3/js/jquery.ztree.excheck.js}"></script>
+
+<script>
+    layui.extend({
+        index: 'lib/index',
+        cssnj: 'common/cssnj'
+    }).use(['index', 'form', 'cssnj'], function () {
+        var admin = layui.admin
+            , form = layui.form
+            , table = layui.table
+            , cssnj = layui.cssnj;
+
+        var onCheck = function onClick(e, treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("gncd_tree"),
+                nodes = zTree.getCheckedNodes(),
+                gncd_cd = "", gncd_gn = "";
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                switch (nodes[i].lx) {
+                    case "1":
+                        gncd_cd += nodes[i].id + ",";
+                        break;
+                    case "2":
+                        gncd_gn += nodes[i].id + ",";
+                        break;
+                }
+            }
+            if (gncd_cd.length > 0) {
+                gncd_cd = gncd_cd.substring(0, gncd_cd.length - 1);
+            }
+            if (gncd_gn.length > 0) {
+                gncd_gn = gncd_gn.substring(0, gncd_gn.length - 1);
+            }
+            $("#gncd_cd").attr("value", gncd_cd);
+            $("#gncd_gn").attr("value", gncd_gn);
+        }, setting = {
+            view: {
+                dblClickExpand: false
+            }, check: {
+                chkboxType: {"Y": "p", "N": "p"},
+                chkStyle: "checkbox",
+                enable: true
+            }, data: {
+                key: {
+                    name: "mc",
+                    url: "xUrl"
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "sjgncdId",
+                    rootPId: null
+                }
+            }, callback: {
+                onCheck: onCheck
+            }
+        }, loadGncds = function () {
+            cssnj.req({
+                url: contextPath + '/xtgl/jsgl',
+                data: JSON.stringify({
+                    handle: 'loadGncds',
+                    data: {
+                        id: $("#id").val()
+                    }
+                }),
+                done: function (res) {
+                    $.fn.zTree.init($("#gncd_tree"), setting, res.data.list);
+                }
+            });
+        };
+        loadGncds();
+    });
+</script>
+</body>
+</html>

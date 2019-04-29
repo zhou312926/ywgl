@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      th:with="title='角色管理'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <table id="tbl_jsgl" lay-filter="tbl_jsgl"></table>
+            <script type="text/html" id="tbl_jsgl_toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="refresh"><i
+                            class="layui-icon layui-icon-refresh-3"></i>刷新
+                    </button>
+                    <shiro:hasPermission name="jsgl:edit">
+                        <button class="layui-btn layui-btn-sm" lay-event="add"><i
+                                class="layui-icon layui-icon-add-1"></i>新增
+                        </button>
+                    </shiro:hasPermission>
+                    <shiro:lacksPermission name="jsgl:edit">
+                        <button class="layui-btn layui-btn-sm layui-btn-disabled"><i
+                                class="layui-icon layui-icon-add-1"></i>新增
+                        </button>
+                    </shiro:lacksPermission>
+                </div>
+            </script>
+            <script type="text/html" id="tbl_col_tool">
+                <shiro:hasPermission name="jsgl:edit">
+                    {{# if(d.czbz == 0){ }}
+                    <a class="layui-btn layui-btn layui-btn-xs" lay-event="edit"><i
+                            class="layui-icon layui-icon-edit"></i>编辑</a>
+                    {{# } else { }}
+                    <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                            class="layui-icon layui-icon-edit"></i>编辑</a>
+                    {{# } }}
+                </shiro:hasPermission>
+                <shiro:lacksPermission name="jsgl:edit">
+                    <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                            class="layui-icon layui-icon-edit"></i>编辑</a>
+                </shiro:lacksPermission>
+                <shiro:hasPermission name="jsgl:sqyh">
+                    {{# if(d.czbz == 0){ }}
+                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="sqyh"><i
+                            class="layui-icon layui-icon-user"></i>用户</a>
+                    {{# } else { }}
+                    <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                            class="layui-icon layui-icon-user"></i>用户</a>
+                    {{# } }}
+                </shiro:hasPermission>
+                <shiro:lacksPermission name="jsgl:sqyh">
+                    <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                            class="layui-icon layui-icon-user"></i>用户</a>
+                </shiro:lacksPermission>
+                <shiro:hasPermission name="jsgl:fpgncd">
+                    {{# if(d.czbz == 0){ }}
+                    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="fpgncd"><i
+                            class="layui-icon layui-icon-list"></i>菜单</a>
+                    {{# } else { }}
+                    <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                            class="layui-icon layui-icon-list"></i>菜单</a>
+                    {{# } }}
+                </shiro:hasPermission>
+                <shiro:lacksPermission name="jsgl:fpgncd">
+                    <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                            class="layui-icon layui-icon-list"></i>菜单</a>
+                </shiro:lacksPermission>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.extend({
+        index: 'lib/index'
+        , jsgl: 'xtgl/jsgl'
+    }).use(['index', 'jsgl']);
+</script>
+</body>
+</html>

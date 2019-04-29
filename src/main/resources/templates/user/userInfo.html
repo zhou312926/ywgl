@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" th:with="title='登录'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">基本资料</div>
+                <div class="layui-card-body">
+                    <div class="layui-form" lay-filter="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="xm" th:value="${userInfo.id}" readonly
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="xm" th:value="${userInfo.xm}" readonly
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">性别</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="xb" value="1" title="男"
+                                       th:checked="${userInfo.xb eq '1' or userInfo.xb==null}">
+                                <input type="radio" name="xb" value="0" title="女" th:checked="${userInfo.xb eq '0'}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">出生日期</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="csrq" name="csrq" lay-verify="date"
+                                       th:value="${userInfo.csrq}"
+                                       placeholder="yyyy-MM-dd"
+                                       autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">移动电话</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="yddh" th:value="${userInfo.yddh}" lay-verify="phone"
+                                       autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">固定电话</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="gddh" th:value="${userInfo.gddh}" lay-verify="number"
+                                       autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">电子邮箱</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="dzyx" th:value="${userInfo.dzyx}" lay-verify="email"
+                                       autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="user_info">确认修改</button>
+                                <button id="btn_reset" class="layui-btn layui-btn-primary">重新填写</button>
+                            </div>
+                        </div>
+                        <input type="hidden" name="id" th:value="${userInfo.id}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.extend({
+        index: 'lib/index',
+        cssnj: 'common/cssnj'
+    }).use(['index', 'admin', 'form', 'laydate', 'cssnj'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , laydate = layui.laydate
+            , cssnj = layui.cssnj;
+
+        form.on('submit(user_info)', function (data) {
+            cssnj.req({
+                url: contextPath + '/user/saveInfo',
+                data: JSON.stringify({
+                    handle: 'saveUserInfo',
+                    data: data.field
+                }),
+                done: function (res) {
+                    cssnj.alert("修改成功", {
+                        end: function () {
+                            location.reload();
+                        }
+                    });
+                }
+            });
+        });
+
+        $("#btn_reset").bind('click', function () {
+            $("input[name='csrq']").val("");
+            $("input[name='yddh']").val("");
+            $("input[name='gddh']").val("");
+            $("input[name='dzyx']").val("");
+        });
+
+        laydate.render({
+            elem: '#csrq'
+        });
+    });
+</script>
+</body>
+</html>

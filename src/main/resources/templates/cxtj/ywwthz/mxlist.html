@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org"
+      th:with="title='问题处理'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <table id="tbl_ywwtmx" lay-filter="tbl_ywwtmx"></table>
+            <script type="text/html" id="tbl_toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="refresh"><i
+                            class="layui-icon layui-icon-refresh-3"></i>刷新
+                    </button>
+                </div>
+            </script>
+            <script type="text/html" id="tbl_col_tool">
+                <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="read"><i
+                        class="layui-icon layui-icon-list"></i>查看</a>
+            </script>
+            <input type="hidden" id="hzlx" th:value="${hzlx}">
+            <input type="hidden" id="hzid" th:value="${hzid}">
+            <input type="hidden" id="hzrqq" th:value="${hzrqq}">
+            <input type="hidden" id="hzrqz" th:value="${hzrqz}">
+        </div>
+    </div>
+</div>
+
+<script th:inline="none">
+    layui.extend({
+        index: 'lib/index',
+        cssnj: 'common/cssnj'
+    }).use(['index', 'admin', 'form', 'table', 'cssnj'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , form = layui.form
+            , table = layui.table
+            , cssnj = layui.cssnj;
+
+        table.render({
+            elem: '#tbl_ywwtmx'
+            , url: contextPath + '/cxtj/ywwthz/loadMxList'
+            , method: 'post'
+            , request: {
+                pageName: 'page'
+                , limitName: 'limit'
+            }
+            , where: {
+                hzlx: $("#hzlx").val(),
+                hzid: $("#hzid").val(),
+                hzrqq: $("#hzrqq").val(),
+                hzrqz: $("#hzrqz").val()
+            }
+            , parseData: function (res) {
+                return {
+                    "code": res.code,
+                    "msg": res.msg,
+                    "count": res.data.count,
+                    "data": res.data.list
+                };
+            }
+            , title: '运维问题明细表'
+            , toolbar: '#tbl_toolbar'
+            , defaultToolbar: []
+            , cols: [[
+                {type: 'numbers', fixed: 'left'}
+                , {field: 'id', title: 'ID', hide: true}
+                , {field: 'bt', title: '标题', minWidth: 100, sort: true}
+                , {field: 'wtlxMc', title: '问题类型', width: 120}
+                , {field: 'yyxtMc', title: '应用系统', width: 160, sort: true}
+                , {
+                    field: 'ywmkMc', title: '业务模块', width: 160, templet: function (d) {
+                        return d.ywmkMc == null ? '<div style="text-align: center;"></div>' : d.ywmkMc;
+                    }
+                }
+                , {field: 'wtztMc', title: '状态', width: 120, sort: true}
+                , {field: 'bmzbMc', title: '录入部门', width: 120}
+                , {field: 'lrryXm', title: '录入人', width: 120}
+                , {field: 'lrsj', title: '录入时间', width: 165}
+                , {title: '操作', width: 100, align: 'center', fixed: 'right', toolbar: '#tbl_col_tool'}
+            ]]
+            , page: true
+            , limit: 10
+            , limits: [10, 15, 20]
+            , height: 'full-58'
+            , text: {none: '暂无相关数据'}
+        });
+
+        table.on('toolbar(tbl_ywwtmx)', function (obj) {
+            if (obj.event == "refresh") {
+                table.reload('tbl_ywwtmx');
+            }
+        });
+
+        table.on('tool(tbl_ywwtmx)', function (obj) {
+            if (obj.event === 'read') {
+                cssnj.window("问题详情", contextPath + '/ywfw/facz/wtxx_read?id=' + obj.data.id, {
+                    width: '1024px',
+                    height: '98%',
+                    end: function () {
+                        table.reload('tbl_ywwtmx');
+                    }
+                });
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

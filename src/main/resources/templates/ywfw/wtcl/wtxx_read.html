@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" th:with="title='详细信息'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/css/template.css}" media="all">
+</head>
+<body>
+
+<div class="layui-fluid layadmin-message-fluid">
+    <div class="layui-row">
+        <div class="layui-col-md12" style="padding-bottom: 20px;">
+            <div class="layui-form">
+                <div class="layui-form-item layui-form-text">
+                    <p class="message-text" style="font-size: 18px;font-weight: bold;" th:utext="${wtxx.bt}"></p>
+                    <p class="message-text" th:text="${wtxx.ms}"></p>
+                    <p class="message-text" style="font-size: 12px;color: #bbb;">
+                        <span th:utext="${wtxx.wtlxMc}" th:if="${wtxx.wtlxMc!=null and wtxx.wtlxMc!=''}"></span>
+                        <span th:utext="${'- '+wtxx.yyxtMc}" th:if="${wtxx.yyxtMc!=null}"></span>
+                        <span th:utext="${'- '+wtxx.ywmkMc}" th:if="${wtxx.ywmkMc!=null and wtxx.ywmkMc!=''}"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12 layadmin-homepage-list-imgtxt message-content" style="padding-bottom:35px;">
+            <fieldset class="layui-elem-field layui-field-title" style="margin: 0px 0px 20px;">
+                <legend><span th:utext="${#lists.size(wthfList)}"></span>&nbsp;条回复</legend>
+            </fieldset>
+            <div class="media-body" style="margin-bottom:0px;" th:each="wthf,wthfStat : ${wthfList}"
+                 th:if="${wthfList!=null}">
+                <div class="pad-btm">
+                    <strong th:utext="${wthf.lrryXm}"></strong>
+                    <span class="layui-breadcrumb" lay-separator="-">
+                        <a href="javascript:;" th:utext="${wthf.lrsj}"></a>
+                      </span>
+                    </p>
+                </div>
+                <p class="message-text" th:text="${wthf.nr}"></p>
+                <hr th:if="${wthfStat.count lt wthfStat.size}" style="margin:20px 0 20px">
+            </div>
+            <div class="media-body" style="margin-bottom:0px;" th:if="${#lists.size(wthfList)==0}">
+                <p class="message-text">暂无</p>
+            </div>
+        </div>
+        <div class="layui-col-md12 layadmin-homepage-list-imgtxt message-content" style="padding-bottom:35px;">
+            <fieldset class="layui-elem-field layui-field-title" style="margin: 0px 0px 20px;">
+                <legend>最终处理方案</legend>
+            </fieldset>
+            <div class="media-body" style="margin-bottom:0px;" th:if="${wtxx.clfa!=null and wtxx.clfa ne ''}">
+                <div class="pad-btm">
+                    <strong th:utext="${wtxx.lrryXm}"></strong>
+                    <span class="layui-breadcrumb" lay-separator="-">
+                        <a href="javascript:;" th:utext="${wtxx.lrsj}"></a>
+                      </span>
+                    </p>
+                </div>
+                <p class="message-text" th:text="${wtxx.clfa}"></p>
+            </div>
+            <div class="media-body" style="margin-bottom:0px;" th:if="${wtxx.clfa==null or wtxx.clfa eq ''}">
+                <p class="message-text">暂无</p>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-form" style="padding-top:0px;">
+                <fieldset class="layui-elem-field layui-field-title" style="margin: 0px 0px 20px;">
+                    <legend>新增回复</legend>
+                </fieldset>
+                <div class="layui-form-item layui-form-text">
+                    <div class="layui-input-block">
+                        <textarea name="nr" placeholder="请输入内容" class="layui-textarea" lay-verify="required"
+                                  maxlength="4000"
+                                  style="resize:none"
+                                  autocomplete="off"></textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item" style="overflow: hidden;">
+                    <div class="layui-input-block layui-input-right">
+                        <button class="layui-btn" lay-submit lay-filter="wtxx_reply">提交</button>
+                    </div>
+                    <!--<div class="layadmin-messag-icon">-->
+                    <!--<a href="javascript:;"><i class="layui-icon layui-icon-face-smile-b"></i></a>-->
+                    <!--<a href="javascript:;"><i class="layui-icon layui-icon-picture"></i></a>-->
+                    <!--<a href="javascript:;"><i class="layui-icon layui-icon-link"></i></a>-->
+                    <!--</div>-->
+                </div>
+                <input type="hidden" id="id" name="id" th:value="${wtxx.id}"/>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    layui.extend({
+        index: 'lib/index',
+        cssnj: 'common/cssnj'
+    }).use(['index', 'form', 'cssnj'], function () {
+        var $ = layui.$, form = layui.form, admin = layui.admin, cssnj = layui.cssnj;
+
+        layui.form.on('submit(wtxx_reply)', function (data) {
+            cssnj.confirm("提交后不可修改，是否确定提交", {
+                yes: function () {
+                    cssnj.req({
+                        url: contextPath + '/ywfw/wtcl',
+                        data: JSON.stringify({
+                            handle: 'saveReply',
+                            data: data.field
+                        }),
+                        done: function (res) {
+                            location.reload();
+                            cssnj.close(index);
+                        }
+                    });
+                }
+            })
+        });
+    });
+</script>
+</body>
+</html>

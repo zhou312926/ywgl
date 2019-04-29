@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      th:with="title='运维脚本'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="bt" maxlength="200" placeholder="请输入内容" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">应用系统</label>
+                        <div class="layui-input-block">
+                            <select name="yyxt" lay-filter="yyxt">
+                                <option value="0">不限</option>
+                                <option th:each="yyxt,yyxtStat : ${yyxtList}" th:if="${yyxtList!=null}"
+                                        th:value="${yyxt.dm}" th:utext="${yyxt.mc}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn layuiadmin-btn-useradmin" lay-submit
+                                lay-filter="ywjb_search">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                            查询
+                        </button>
+                        <button class="layui-btn layuiadmin-btn-useradmin" type="reset"
+                                id="ywjb_reset">
+                            <i class="layui-icon layui-icon-refresh layuiadmin-button-btn"></i>
+                            重置
+                        </button>
+                    </div>
+                    <!--<div class="layui-row layui-col-space10">-->
+                    <!--<div class="layui-col-md6">-->
+                    <!--<label class="layui-form-label">标题</label>-->
+                    <!--<div class="layui-input-block">-->
+                    <!--<input type="text" name="bt" maxlength="200" placeholder="请输入内容" autocomplete="off"-->
+                    <!--class="layui-input">-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md6">-->
+                    <!--<label class="layui-form-label">应用系统</label>-->
+                    <!--<div class="layui-input-block">-->
+                    <!--<select name="yyxt" lay-filter="yyxt">-->
+                    <!--<option value="0">不限</option>-->
+                    <!--<option th:each="yyxt,yyxtStat : ${yyxtList}" th:if="${yyxtList!=null}"-->
+                    <!--th:value="${yyxt.dm}" th:utext="${yyxt.mc}"></option>-->
+                    <!--</select>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-md12">-->
+                    <!--<div style="width:100%;margin:0 auto;text-align: center">-->
+                    <!--<button class="layui-btn layuiadmin-btn-useradmin" lay-submit-->
+                    <!--lay-filter="ywjb_search">-->
+                    <!--<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>-->
+                    <!--查询-->
+                    <!--</button>-->
+                    <!--<button class="layui-btn layuiadmin-btn-useradmin" type="reset"-->
+                    <!--id="ywjb_reset">-->
+                    <!--<i class="layui-icon layui-icon-refresh layuiadmin-button-btn"></i>-->
+                    <!--重置-->
+                    <!--</button>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </form>
+        </div>
+        <div class="layui-card-body">
+            <table id="tbl_ywjb" lay-filter="tbl_ywjb"></table>
+            <script type="text/html" id="tbl_ywjb_toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="refresh"><i
+                            class="layui-icon layui-icon-refresh-3"></i>刷新
+                    </button>
+                    <shiro:hasPermission name="ywjb:edit">
+                        <button class="layui-btn layui-btn-sm" lay-event="add"><i
+                                class="layui-icon layui-icon-add-1"></i>新增
+                        </button>
+                        <button class="layui-btn layui-btn-sm" lay-event="mbxz"><i
+                                class="layui-icon layui-icon-download-circle"></i>模板下载
+                        </button>
+                        <button class="layui-btn layui-btn-sm" lay-event="mbsc" id="mbsc"><i
+                                class="layui-icon layui-icon-upload-circle"></i>模板上传
+                        </button>
+                    </shiro:hasPermission>
+                    <shiro:lacksPermission name="ywjb:edit">
+                        <button class="layui-btn layui-btn-sm layui-btn-disabled"><i
+                                class="layui-icon layui-icon-add-1"></i>新增
+                        </button>
+                        <button class="layui-btn layui-btn-sm layui-btn-disabled"><i
+                                class="layui-icon layui-icon-download-circle"></i>模板下载
+                        </button>
+                        <button class="layui-btn layui-btn-sm layui-btn-disabled"><i
+                                class="layui-icon layui-icon-upload-circle"></i>模板上传
+                        </button>
+                    </shiro:lacksPermission>
+                    <!--<button class="layui-btn layui-btn-sm" lay-event="batchdel"><i-->
+                    <!--class="layui-icon layui-icon-delete"></i>删除-->
+                    <!--</button>-->
+                </div>
+            </script>
+            <script type="text/html" id="tbl_col_tool">
+                <shiro:hasPermission name="ywjb:query">
+                    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="read"><i
+                            class="layui-icon layui-icon-list"></i>查看</a>
+                </shiro:hasPermission>
+                <shiro:lacksPermission name="ywjb:query">
+                    <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                            class="layui-icon layui-icon-list"></i>查看</a>
+                </shiro:lacksPermission>
+                <shiro:hasPermission name="ywjb:edit">
+                    {{# if(d.czbz == 0){ }}
+                    <a class="layui-btn layui-btn layui-btn-xs" lay-event="edit"><i
+                            class="layui-icon layui-icon-edit"></i>编辑</a>
+                    {{# } else { }}
+                    <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                            class="layui-icon layui-icon-edit"></i>编辑</a>
+                    {{# } }}
+                </shiro:hasPermission>
+                <shiro:lacksPermission name="ywjb:edit">
+                    <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                            class="layui-icon layui-icon-edit"></i>编辑</a>
+                </shiro:lacksPermission>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.extend({
+        index: 'lib/index'
+        , ywjb: 'ywfw/ywjb'
+    }).use(['index', 'ywjb']);
+</script>
+</body>
+</html>

@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cssnj.ywgl.domain.user.UserMapper">
+    <resultMap id="BaseResultMap" type="com.cssnj.ywgl.domain.user.User">
+        <constructor>
+            <idArg column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="xm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="xb" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="csrq" javaType="java.util.Date" jdbcType="DATE"/>
+            <arg column="yddh" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="gddh" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="dzyx" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="lx" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="bmzb_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="yxbz" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="lrry" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="lrsj" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="xgry" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="xgsj" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        </constructor>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, xm, xb, csrq, yddh, gddh, dzyx, lx, bmzb_id, yxbz, lrry, lrsj, xgry, xgsj
+  </sql>
+    <select id="selectByExample" parameterType="com.cssnj.ywgl.domain.user.UserCriteria" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_xt_yhxx
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_xt_yhxx
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_xt_yhxx
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.cssnj.ywgl.domain.user.UserCriteria">
+        delete from t_xt_yhxx
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.cssnj.ywgl.domain.user.User">
+    insert into t_xt_yhxx (id, xm, xb, csrq, 
+      yddh, gddh, dzyx, lx, 
+      bmzb_id, yxbz, lrry, lrsj, 
+      xgry, xgsj)
+    values (#{id,jdbcType=VARCHAR}, #{xm,jdbcType=VARCHAR}, #{xb,jdbcType=CHAR}, #{csrq,jdbcType=DATE}, 
+      #{yddh,jdbcType=CHAR}, #{gddh,jdbcType=CHAR}, #{dzyx,jdbcType=VARCHAR}, #{lx,jdbcType=CHAR}, 
+      #{bmzbId,jdbcType=VARCHAR}, #{yxbz,jdbcType=CHAR}, #{lrry,jdbcType=VARCHAR}, #{lrsj,jdbcType=TIMESTAMP}, 
+      #{xgry,jdbcType=VARCHAR}, #{xgsj,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.cssnj.ywgl.domain.user.User">
+        insert into t_xt_yhxx
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="xm != null">
+                xm,
+            </if>
+            <if test="xb != null">
+                xb,
+            </if>
+            <if test="csrq != null">
+                csrq,
+            </if>
+            <if test="yddh != null">
+                yddh,
+            </if>
+            <if test="gddh != null">
+                gddh,
+            </if>
+            <if test="dzyx != null">
+                dzyx,
+            </if>
+            <if test="lx != null">
+                lx,
+            </if>
+            <if test="bmzbId != null">
+                bmzb_id,
+            </if>
+            <if test="yxbz != null">
+                yxbz,
+            </if>
+            <if test="lrry != null">
+                lrry,
+            </if>
+            <if test="lrsj != null">
+                lrsj,
+            </if>
+            <if test="xgry != null">
+                xgry,
+            </if>
+            <if test="xgsj != null">
+                xgsj,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="xm != null">
+                #{xm,jdbcType=VARCHAR},
+            </if>
+            <if test="xb != null">
+                #{xb,jdbcType=CHAR},
+            </if>
+            <if test="csrq != null">
+                #{csrq,jdbcType=DATE},
+            </if>
+            <if test="yddh != null">
+                #{yddh,jdbcType=CHAR},
+            </if>
+            <if test="gddh != null">
+                #{gddh,jdbcType=CHAR},
+            </if>
+            <if test="dzyx != null">
+                #{dzyx,jdbcType=VARCHAR},
+            </if>
+            <if test="lx != null">
+                #{lx,jdbcType=CHAR},
+            </if>
+            <if test="bmzbId != null">
+                #{bmzbId,jdbcType=VARCHAR},
+            </if>
+            <if test="yxbz != null">
+                #{yxbz,jdbcType=CHAR},
+            </if>
+            <if test="lrry != null">
+                #{lrry,jdbcType=VARCHAR},
+            </if>
+            <if test="lrsj != null">
+                #{lrsj,jdbcType=TIMESTAMP},
+            </if>
+            <if test="xgry != null">
+                #{xgry,jdbcType=VARCHAR},
+            </if>
+            <if test="xgsj != null">
+                #{xgsj,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.cssnj.ywgl.domain.user.UserCriteria" resultType="java.lang.Integer">
+        select count(*) from t_xt_yhxx
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update t_xt_yhxx
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.xm != null">
+                xm = #{record.xm,jdbcType=VARCHAR},
+            </if>
+            <if test="record.xb != null">
+                xb = #{record.xb,jdbcType=CHAR},
+            </if>
+            <if test="record.csrq != null">
+                csrq = #{record.csrq,jdbcType=DATE},
+            </if>
+            <if test="record.yddh != null">
+                yddh = #{record.yddh,jdbcType=CHAR},
+            </if>
+            <if test="record.gddh != null">
+                gddh = #{record.gddh,jdbcType=CHAR},
+            </if>
+            <if test="record.dzyx != null">
+                dzyx = #{record.dzyx,jdbcType=VARCHAR},
+            </if>
+            <if test="record.lx != null">
+                lx = #{record.lx,jdbcType=CHAR},
+            </if>
+            <if test="record.bmzbId != null">
+                bmzb_id = #{record.bmzbId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.yxbz != null">
+                yxbz = #{record.yxbz,jdbcType=CHAR},
+            </if>
+            <if test="record.lrry != null">
+                lrry = #{record.lrry,jdbcType=VARCHAR},
+            </if>
+            <if test="record.lrsj != null">
+                lrsj = #{record.lrsj,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.xgry != null">
+                xgry = #{record.xgry,jdbcType=VARCHAR},
+            </if>
+            <if test="record.xgsj != null">
+                xgsj = #{record.xgsj,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update t_xt_yhxx
+        set id = #{record.id,jdbcType=VARCHAR},
+        xm = #{record.xm,jdbcType=VARCHAR},
+        xb = #{record.xb,jdbcType=CHAR},
+        csrq = #{record.csrq,jdbcType=DATE},
+        yddh = #{record.yddh,jdbcType=CHAR},
+        gddh = #{record.gddh,jdbcType=CHAR},
+        dzyx = #{record.dzyx,jdbcType=VARCHAR},
+        lx = #{record.lx,jdbcType=CHAR},
+        bmzb_id = #{record.bmzbId,jdbcType=VARCHAR},
+        yxbz = #{record.yxbz,jdbcType=CHAR},
+        lrry = #{record.lrry,jdbcType=VARCHAR},
+        lrsj = #{record.lrsj,jdbcType=TIMESTAMP},
+        xgry = #{record.xgry,jdbcType=VARCHAR},
+        xgsj = #{record.xgsj,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cssnj.ywgl.domain.user.User">
+        update t_xt_yhxx
+        <set>
+            <if test="xm != null">
+                xm = #{xm,jdbcType=VARCHAR},
+            </if>
+            <if test="xb != null">
+                xb = #{xb,jdbcType=CHAR},
+            </if>
+            <if test="csrq != null">
+                csrq = #{csrq,jdbcType=DATE},
+            </if>
+            <if test="yddh != null">
+                yddh = #{yddh,jdbcType=CHAR},
+            </if>
+            <if test="gddh != null">
+                gddh = #{gddh,jdbcType=CHAR},
+            </if>
+            <if test="dzyx != null">
+                dzyx = #{dzyx,jdbcType=VARCHAR},
+            </if>
+            <if test="lx != null">
+                lx = #{lx,jdbcType=CHAR},
+            </if>
+            <if test="bmzbId != null">
+                bmzb_id = #{bmzbId,jdbcType=VARCHAR},
+            </if>
+            <if test="yxbz != null">
+                yxbz = #{yxbz,jdbcType=CHAR},
+            </if>
+            <if test="lrry != null">
+                lrry = #{lrry,jdbcType=VARCHAR},
+            </if>
+            <if test="lrsj != null">
+                lrsj = #{lrsj,jdbcType=TIMESTAMP},
+            </if>
+            <if test="xgry != null">
+                xgry = #{xgry,jdbcType=VARCHAR},
+            </if>
+            <if test="xgsj != null">
+                xgsj = #{xgsj,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cssnj.ywgl.domain.user.User">
+    update t_xt_yhxx
+    set xm = #{xm,jdbcType=VARCHAR},
+      xb = #{xb,jdbcType=CHAR},
+      csrq = #{csrq,jdbcType=DATE},
+      yddh = #{yddh,jdbcType=CHAR},
+      gddh = #{gddh,jdbcType=CHAR},
+      dzyx = #{dzyx,jdbcType=VARCHAR},
+      lx = #{lx,jdbcType=CHAR},
+      bmzb_id = #{bmzbId,jdbcType=VARCHAR},
+      yxbz = #{yxbz,jdbcType=CHAR},
+      lrry = #{lrry,jdbcType=VARCHAR},
+      lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      xgry = #{xgry,jdbcType=VARCHAR},
+      xgsj = #{xgsj,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <select id="selectByExampleWithRowbounds" parameterType="com.cssnj.ywgl.domain.user.UserCriteria"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_xt_yhxx
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectForList" resultType="com.cssnj.ywgl.vo.user.UserVo">
+        SELECT
+        a.id,
+        a.xm,
+        a.xb,
+        DATE_FORMAT(a.csrq, '%Y-%m-%d %H:%i:%S') csrq,
+        a.yddh,
+        a.gddh,
+        a.dzyx,
+        a.bmzb_id bmzbId,
+        b.mc bmzbMc,
+        a.yxbz
+        FROM t_xt_yhxx a
+        LEFT JOIN t_xt_bmzb b on a.bmzb_id=b.id
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="xm!=null and xm!=''">
+                <bind name="xm" value="'%' + _parameter.xm + '%'"/>
+                xm LIKE #{xm}
+            </if>
+            <if test="bmzbId!=null and bmzbId!=''">
+                AND bmzb_id = #{bmzbId}
+            </if>
+        </trim>
+        ORDER BY id ASC LIMIT #{offset},#{rows}
+    </select>
+    <select id="countForJsysq" resultType="java.lang.Integer">
+        SELECT
+        count(*)
+        FROM t_xt_yhxx a
+        LEFT JOIN t_xt_bmzb b on a.bmzb_id=b.id
+        WHERE a.id IN (SELECT x.yh_id FROM t_qx_yh_js x WHERE x.js_id=#{jsId})
+        <if test="xm!=null and xm!=''">
+            <bind name="xm" value="'%' + _parameter.xm + '%'"/>
+            AND xm LIKE #{xm}
+        </if>
+        <if test="bmzbId!=null and bmzbId!=''">
+            AND bmzb_id = #{bmzbId}
+        </if>
+    </select>
+    <select id="selectForJsysq" resultType="com.cssnj.ywgl.vo.user.UserVo">
+        SELECT
+        a.id,
+        a.xm,
+        a.xb,
+        DATE_FORMAT(a.csrq, '%Y-%m-%d %H:%i:%S') csrq,
+        a.yddh,
+        a.gddh,
+        a.dzyx,
+        a.bmzb_id bmzbId,
+        b.mc bmzbMc,
+        a.yxbz
+        FROM t_xt_yhxx a
+        LEFT JOIN t_xt_bmzb b on a.bmzb_id=b.id
+        WHERE a.id IN (SELECT x.yh_id FROM t_qx_yh_js x WHERE x.js_id=#{jsId})
+        <if test="xm!=null and xm!=''">
+            <bind name="xm" value="'%' + _parameter.xm + '%'"/>
+            AND xm LIKE #{xm}
+        </if>
+        <if test="bmzbId!=null and bmzbId!=''">
+            AND bmzb_id = #{bmzbId}
+        </if>
+        ORDER BY id ASC LIMIT #{offset},#{rows}
+    </select>
+    <select id="countForJswsq" resultType="java.lang.Integer">
+        SELECT
+        count(*)
+        FROM t_xt_yhxx a
+        LEFT JOIN t_xt_bmzb b on a.bmzb_id=b.id
+        WHERE a.id NOT IN (SELECT x.yh_id FROM t_qx_yh_js x WHERE x.js_id=#{jsId})
+        <if test="xm!=null and xm!=''">
+            <bind name="xm" value="'%' + _parameter.xm + '%'"/>
+            AND xm LIKE #{xm}
+        </if>
+        <if test="bmzbId!=null and bmzbId!=''">
+            AND bmzb_id = #{bmzbId}
+        </if>
+    </select>
+    <select id="selectForJswsq" resultType="com.cssnj.ywgl.vo.user.UserVo">
+        SELECT
+        a.id,
+        a.xm,
+        a.xb,
+        DATE_FORMAT(a.csrq, '%Y-%m-%d %H:%i:%S') csrq,
+        a.yddh,
+        a.gddh,
+        a.dzyx,
+        a.bmzb_id bmzbId,
+        b.mc bmzbMc,
+        a.yxbz
+        FROM t_xt_yhxx a
+        LEFT JOIN t_xt_bmzb b on a.bmzb_id=b.id
+        WHERE a.id NOT IN (SELECT x.yh_id FROM t_qx_yh_js x WHERE x.js_id=#{jsId})
+        <if test="xm!=null and xm!=''">
+            <bind name="xm" value="'%' + _parameter.xm + '%'"/>
+            AND xm LIKE #{xm}
+        </if>
+        <if test="bmzbId!=null and bmzbId!=''">
+            AND bmzb_id = #{bmzbId}
+        </if>
+        ORDER BY id ASC LIMIT #{offset},#{rows}
+    </select>
+    <select id="countForBmzbgl" resultType="java.lang.Integer">
+        SELECT
+        count(*)
+        FROM t_xt_yhxx a
+        WHERE bmzb_id = #{bmzbId}
+        <if test="xm!=null and xm!=''">
+            <bind name="xm" value="'%' + _parameter.xm + '%'"/>
+            AND xm LIKE #{xm}
+        </if>
+    </select>
+    <select id="selectForBmzbgl" resultType="com.cssnj.ywgl.vo.user.UserVo">
+        SELECT
+        a.id,
+        a.xm,
+        a.xb,
+        DATE_FORMAT(a.csrq, '%Y-%m-%d %H:%i:%S') csrq,
+        a.yddh,
+        a.gddh,
+        a.dzyx,
+        a.bmzb_id bmzbId,
+        b.mc bmzbMc,
+        a.yxbz
+        FROM t_xt_yhxx a
+        LEFT JOIN t_xt_bmzb b on a.bmzb_id=b.id
+        WHERE bmzb_id = #{bmzbId}
+        <if test="xm!=null and xm!=''">
+            <bind name="xm" value="'%' + _parameter.xm + '%'"/>
+            AND xm LIKE #{xm}
+        </if>
+        ORDER BY id ASC LIMIT #{offset},#{rows}
+    </select>
+    <select id="countForDsgl" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM t_xt_yhxx a,t_xt_bmzb b
+        WHERE a.bmzb_id=b.id AND a.id NOT IN (SELECT x.yh_id FROM t_kp_dsxx x)
+        <if test="xm!=null and xm!=''">
+            <bind name="xm" value="'%' + _parameter.xm + '%'"/>
+            AND xm LIKE #{xm}
+        </if>
+        <if test="bmzbId!=null and bmzbId!=''">
+            AND bmzb_id = #{bmzbId}
+        </if>
+    </select>
+    <select id="selectForDsgl" resultType="com.cssnj.ywgl.vo.user.UserVo">
+        SELECT
+        a.id,
+        a.xm,
+        a.xb,
+        DATE_FORMAT(a.csrq, '%Y-%m-%d %H:%i:%S') csrq,
+        a.yddh,
+        a.gddh,
+        a.dzyx,
+        a.bmzb_id bmzbId,
+        b.mc bmzbMc,
+        a.yxbz
+        FROM t_xt_yhxx a,t_xt_bmzb b
+        WHERE a.bmzb_id=b.id AND a.id NOT IN (SELECT x.yh_id FROM t_kp_dsxx x)
+        <if test="xm!=null and xm!=''">
+            <bind name="xm" value="'%' + _parameter.xm + '%'"/>
+            AND xm LIKE #{xm}
+        </if>
+        <if test="bmzbId!=null and bmzbId!=''">
+            AND bmzb_id = #{bmzbId}
+        </if>
+        ORDER BY id ASC LIMIT #{offset},#{rows}
+    </select>
+    <select id="countForXsyfp" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM t_xt_yhxx a,t_xt_bmzb b
+        WHERE a.bmzb_id=b.id AND a.id IN (SELECT x.yh_id FROM t_kp_xsxx x WHERE x.yxbz='Y' AND x.ds_id=#{dsId})
+        <if test="xm!=null and xm!=''">
+            <bind name="xm" value="'%' + _parameter.xm + '%'"/>
+            AND xm LIKE #{xm}
+        </if>
+        <if test="bmzbId!=null and bmzbId!=''">
+            AND bmzb_id = #{bmzbId}
+        </if>
+    </select>
+    <select id="selectForXsyfp" resultType="com.cssnj.ywgl.vo.user.UserVo">
+        SELECT
+        a.id,
+        a.xm,
+        a.xb,
+        DATE_FORMAT(a.csrq, '%Y-%m-%d %H:%i:%S') csrq,
+        a.yddh,
+        a.gddh,
+        a.dzyx,
+        a.bmzb_id bmzbId,
+        b.mc bmzbMc,
+        a.yxbz
+        FROM t_xt_yhxx a,t_xt_bmzb b
+        WHERE a.bmzb_id=b.id AND a.id IN (SELECT x.yh_id FROM t_kp_xsxx x WHERE x.yxbz='Y' AND x.ds_id=#{dsId})
+        <if test="xm!=null and xm!=''">
+            <bind name="xm" value="'%' + _parameter.xm + '%'"/>
+            AND xm LIKE #{xm}
+        </if>
+        <if test="bmzbId!=null and bmzbId!=''">
+            AND bmzb_id = #{bmzbId}
+        </if>
+        ORDER BY id ASC LIMIT #{offset},#{rows}
+    </select>
+    <select id="countForXswfp" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM t_xt_yhxx a,t_xt_bmzb b
+        WHERE a.bmzb_id=b.id
+        AND a.id != #{dsYhId}
+        AND a.id NOT IN (SELECT x.yh_id FROM t_kp_xsxx x WHERE x.yxbz='Y' AND x.ds_id=#{dsId})
+        <if test="xm!=null and xm!=''">
+            <bind name="xm" value="'%' + _parameter.xm + '%'"/>
+            AND xm LIKE #{xm}
+        </if>
+        <if test="bmzbId!=null and bmzbId!=''">
+            AND bmzb_id = #{bmzbId}
+        </if>
+    </select>
+    <select id="selectForXswfp" resultType="com.cssnj.ywgl.vo.user.UserVo">
+        SELECT
+        a.id,
+        a.xm,
+        a.xb,
+        DATE_FORMAT(a.csrq, '%Y-%m-%d %H:%i:%S') csrq,
+        a.yddh,
+        a.gddh,
+        a.dzyx,
+        a.bmzb_id bmzbId,
+        b.mc bmzbMc,
+        a.yxbz
+        FROM t_xt_yhxx a,t_xt_bmzb b
+        WHERE a.bmzb_id=b.id
+        AND a.id != #{dsYhId}
+        AND a.id NOT IN (SELECT x.yh_id FROM t_kp_xsxx x WHERE x.yxbz='Y' AND x.ds_id=#{dsId})
+        <if test="xm!=null and xm!=''">
+            <bind name="xm" value="'%' + _parameter.xm + '%'"/>
+            AND xm LIKE #{xm}
+        </if>
+        <if test="bmzbId!=null and bmzbId!=''">
+            AND bmzb_id = #{bmzbId}
+        </if>
+        ORDER BY id ASC LIMIT #{offset},#{rows}
+    </select>
+</mapper>

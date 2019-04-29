@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org"
+      th:with="title='访问出错'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+</head>
+<body>
+
+
+<div class="layui-fluid">
+    <div class="layadmin-tips">
+        <i class="layui-icon" face>&#xe664;</i>
+
+        <div class="layui-text" style="font-size: 20px;">
+            <span th:utext="${code}"></span>&nbsp;&nbsp;<span th:utext="${msg}"/>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    layui.extend({
+        index: 'lib/index'
+    }).use(['index']);
+</script>
+</body>
+</html>

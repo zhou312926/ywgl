@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cssnj.ywgl.domain.xtdm.ZhlxMapper">
+  <resultMap id="BaseResultMap" type="com.cssnj.ywgl.domain.xtdm.Zhlx">
+    <constructor>
+      <idArg column="dm" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="mc" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="yxbz" javaType="java.lang.String" jdbcType="CHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    dm, mc, yxbz
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_dm_xt_zhlx
+    where dm = #{dm,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_dm_xt_zhlx
+    where dm = #{dm,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cssnj.ywgl.domain.xtdm.Zhlx">
+    insert into t_dm_xt_zhlx (dm, mc, yxbz)
+    values (#{dm,jdbcType=CHAR}, #{mc,jdbcType=VARCHAR}, #{yxbz,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cssnj.ywgl.domain.xtdm.Zhlx">
+    insert into t_dm_xt_zhlx
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dm != null">
+        dm,
+      </if>
+      <if test="mc != null">
+        mc,
+      </if>
+      <if test="yxbz != null">
+        yxbz,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dm != null">
+        #{dm,jdbcType=CHAR},
+      </if>
+      <if test="mc != null">
+        #{mc,jdbcType=VARCHAR},
+      </if>
+      <if test="yxbz != null">
+        #{yxbz,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cssnj.ywgl.domain.xtdm.Zhlx">
+    update t_dm_xt_zhlx
+    <set>
+      <if test="mc != null">
+        mc = #{mc,jdbcType=VARCHAR},
+      </if>
+      <if test="yxbz != null">
+        yxbz = #{yxbz,jdbcType=CHAR},
+      </if>
+    </set>
+    where dm = #{dm,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cssnj.ywgl.domain.xtdm.Zhlx">
+    update t_dm_xt_zhlx
+    set mc = #{mc,jdbcType=VARCHAR},
+      yxbz = #{yxbz,jdbcType=CHAR}
+    where dm = #{dm,jdbcType=CHAR}
+  </update>
+</mapper>

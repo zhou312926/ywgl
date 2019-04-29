@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      th:with="title='部门管理'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <table id="tbl_bmzbgl" lay-filter="tbl_bmzbgl"></table>
+            <script type="text/html" id="tbl_bmzbgl_toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="refresh"><i
+                            class="layui-icon layui-icon-refresh-3"></i>刷新
+                    </button>
+                    <shiro:hasPermission name="bmzbgl:edit">
+                        <button class="layui-btn layui-btn-sm" lay-event="add"><i
+                                class="layui-icon layui-icon-add-1"></i>新增
+                        </button>
+                        <!--<button class="layui-btn layui-btn-sm" lay-event="batchdel"><i-->
+                        <!--class="layui-icon layui-icon-delete"></i>删除-->
+                        <!--</button>-->
+                    </shiro:hasPermission>
+                    <shiro:lacksPermission name="bmzbgl:edit">
+                        <button class="layui-btn layui-btn-sm layui-btn-disabled"><i
+                                class="layui-icon layui-icon-add-1"></i>新增
+                        </button>
+                    </shiro:lacksPermission>
+                </div>
+            </script>
+            <script type="text/html" id="tbl_col_tool">
+                <shiro:hasPermission name="bmzbgl:edit">
+                    <a class="layui-btn layui-btn layui-btn-xs" lay-event="edit"><i
+                            class="layui-icon layui-icon-edit"></i>编辑</a>
+                </shiro:hasPermission>
+                <shiro:lacksPermission name="bmzbgl:edit">
+                    <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                            class="layui-icon layui-icon-edit"></i>编辑</a>
+                </shiro:lacksPermission>
+                <shiro:hasPermission name="bmzbgl:rygl">
+                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="bmzbyh"><i
+                            class="layui-icon layui-icon-user"></i>人员</a>
+                </shiro:hasPermission>
+                <shiro:lacksPermission name="bmzbgl:rygl">
+                    <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                            class="layui-icon layui-icon-user"></i>人员</a>
+                </shiro:lacksPermission>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.extend({
+        index: 'lib/index'
+        , bmzbgl: 'xtgl/bmzbgl'
+    }).use(['index', 'bmzbgl']);
+</script>
+</body>
+</html>

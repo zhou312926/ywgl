@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org"
+      th:with="title='角色管理'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/plugin/jqGrid/css/ui.jqgrid-bootstrap.css}" media="all">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/plugin/jqGrid/css/ui.jqgrid-bootstrap-ui.css}" media="all">
+
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <table id="tbl_bmzbgl" ></table>
+            <div id="bmzbgl_pager"></div>
+
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/cssnjadmin/plugin/jqGrid/jquery-1.11.0.min.js}"></script>
+<script th:src="@{/cssnjadmin/plugin/jqGrid/i18n/grid.locale-cn.js}"></script>
+<script th:src="@{/cssnjadmin/plugin/jqGrid/jquery.jqGrid.min.js}"></script>
+
+<script>
+    layui.extend({
+        index: 'lib/index'
+        , bmzbgl: 'xtgl/bmzbgl'
+    }).use(['index', 'bmzbgl']);
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      th:with="title='通知公告管理'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/css/xtgl/tzgggl.css}" media="all">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-row layui-col-space10">
+                        <div class="layui-col-md5">
+                            <label class="layui-form-label">标题</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="bt" maxlength="100" placeholder="请输入内容" autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-col-md7">
+                            <div>
+                                <button class="layui-btn layuiadmin-btn-useradmin" lay-submit
+                                        lay-filter="tzgg_search">
+                                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                                    查询
+                                </button>
+                                <button class="layui-btn layuiadmin-btn-useradmin" type="reset"
+                                        id="tzgggl_reset">
+                                    <i class="layui-icon layui-icon-refresh layuiadmin-button-btn"></i>
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-card-body">
+            <table id="tbl_tzgggl" lay-filter="tbl_tzgggl"></table>
+            <script type="text/html" id="tbl_tzgggl_toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="refresh"><i
+                            class="layui-icon layui-icon-refresh-3"></i>刷新
+                    </button>
+                    <shiro:hasPermission name="tzgggl:edit">
+                        <button class="layui-btn layui-btn-sm" lay-event="add"><i
+                                class="layui-icon layui-icon-add-1"></i>新增
+                        </button>
+                    </shiro:hasPermission>
+                    <shiro:lacksPermission name="tzgggl:edit">
+                        <button class="layui-btn layui-btn-sm layui-btn-disabled"><i
+                                class="layui-icon layui-icon-add-1"></i>新增
+                        </button>
+                    </shiro:lacksPermission>
+                </div>
+            </script>
+            <script type="text/html" id="tbl_col_tool">
+                <shiro:hasPermission name="tzgggl:edit">
+                    <a class="layui-btn layui-btn layui-btn-xs" lay-event="edit"><i
+                            class="layui-icon layui-icon-edit"></i>编辑</a>
+                </shiro:hasPermission>
+                <shiro:lacksPermission name="tzgggl:edit">
+                    <a class="layui-btn layui-btn-disabled layui-btn-xs"><i
+                            class="layui-icon layui-icon-edit"></i>编辑</a>
+                </shiro:lacksPermission>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.extend({
+        index: 'lib/index'
+        , tzgggl: 'xtgl/tzgggl'
+    }).use(['index', 'tzgggl']);
+</script>
+</body>
+</html>

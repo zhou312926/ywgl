@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" th:with="title='通知公告'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/css/template.css}" media="all">
+</head>
+<body>
+<div class="layui-form layui-fluid layadmin-maillist-fluid">
+    <div class="layadmin-contact-box">
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题</label>
+            <div class="layui-input-inline">
+                <input type="text" id="bt" name="bt" maxlength="100" style="width: 500px;"
+                       placeholder="请输入内容" lay-verify="required|bt"
+                       autocomplete="off"
+                       class="layui-input" th:value="${notice.bt}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">公告内容</label>
+            <div class="layui-input-inline" style="width: 500px;">
+                <textarea name="nr" placeholder="请输入内容" lay-verify="required|nr" maxlength="4000"
+                          autocomplete="off" class="layui-textarea" th:text="${notice.nr}"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">过期时间</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="gqsj" name="gqsj" lay-verify="required"
+                       th:value="${notice.gqsj}" readonly
+                       placeholder="yyyy-MM-dd HH:mm:ss"
+                       autocomplete="off">
+            </div>
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-inline">
+                <input type="hidden" id="yxbz" name="yxbz" th:value="${notice.yxbz==null?'N':notice.yxbz}">
+                <input type="checkbox" lay-skin="switch" lay-filter="switch_zt" lay-text="有效|无效"
+                       th:checked="${notice.yxbz eq'Y'}">
+            </div>
+        </div>
+        <div class="layui-form-item" style="color:#ff0000;">
+            <label class="layui-form-label">提示：</label>
+            <div class="layui-input-inline" style="width: 500px;padding-top:9px;">
+                <p>1、确定保存即发布</p>
+                <p>2、修改已发布的通知公告只对尚未阅读并确认的用户生效</p>
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <input type="button" lay-submit lay-filter="tzgg_back_submit" id="tzgg_back_submit" value="确定">
+            <input type="button" id="tzgg_priview" value="预览">
+            <input type="hidden" name="id" th:value="${notice.id}"/>
+        </div>
+    </div>
+</div>
+<script th:src="@{/cssnjadmin/plugin/ckeditor/ckeditor.js}"></script>
+<script>
+    layui.extend({
+        index: 'lib/index',
+        cssnj: 'common/cssnj'
+    }).use(['index', 'form', 'laydate', 'cssnj'], function () {
+        var $ = layui.$, form = layui.form, laydate = layui.laydate, admin = layui.admin, cssnj = layui.cssnj;
+        var editor = CKEDITOR.replace('nr');
+        laydate.render({
+            elem: '#gqsj',
+            format: 'yyyy-MM-dd HH:mm:ss',
+            trigger: 'click'
+        });
+        form.on('switch(switch_zt)', function (data) {
+            if (this.checked) {
+                $("#yxbz").val("Y");
+            } else {
+                $("#yxbz").val("N")
+            }
+        });
+        $('#tzgg_priview').bind('click', function () {
+            $("textarea[name='nr']").val(editor.getData());
+        });
+        form.verify({
+            bt: function (value, item) {
+                if (item.value.trim().length < 5) {
+                    return '标题至少5个字描述';
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

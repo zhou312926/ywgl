@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org" th:with="title='用户信息'">
+<head th:replace="common/base :: common_header(~{::link},null)">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/css/template.css}" media="all">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/plugin/zTree_v3/css/metroStyle/metroStyle.css}" media="all">
+    <link rel="stylesheet" th:href="@{/cssnjadmin/plugin/zTree_v3/css/myzTree.css}" media="all">
+</head>
+<body>
+<div class="layui-form layui-fluid layadmin-maillist-fluid">
+    <div class="layadmin-contact-box">
+        <div class="layui-form-item">
+            <label class="layui-form-label">工号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="id" maxlength="48" style="width: 400px;"
+                       placeholder="请输入内容" lay-verify="required"
+                       autocomplete="off" readonly
+                       class="layui-input" th:value="${yhxx.id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="xm" maxlength="18" style="width: 400px;"
+                       placeholder="请输入内容"
+                       autocomplete="off"
+                       class="layui-input" th:value="${yhxx.xm}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="xb" value="1" title="男" th:checked="${yhxx.xb eq'1' or yhxx.xb==null}">
+                <input type="radio" name="xb" value="0" title="女" th:checked="${yhxx.xb eq'0'}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">移动电话</label>
+            <div class="layui-input-inline">
+                <input type="text" name="yddh" maxlength="98" style="width: 400px;"
+                       placeholder="请输入内容"
+                       autocomplete="off"
+                       class="layui-input" th:value="${yhxx.yddh}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">固定电话</label>
+            <div class="layui-input-inline">
+                <input type="text" name="gddh" maxlength="18" style="width: 400px;"
+                       placeholder="请输入内容"
+                       autocomplete="off"
+                       class="layui-input" th:value="${yhxx.gddh}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">电子邮箱</label>
+            <div class="layui-input-inline">
+                <input type="text" name="dzyx" maxlength="18" style="width: 400px;"
+                       placeholder="请输入内容"
+                       autocomplete="off"
+                       class="layui-input" th:value="${yhxx.dzyx}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门</label>
+            <div class="layui-input-inline">
+                <input type="hidden" id="bmzbId" name="bmzbId" th:value="${yhxx.bmzbId}"/>
+                <input type="text" id="bmzb" name="bmzb" maxlength="50" style="width: 400px;"
+                       placeholder="请输入内容" lay-verify="required" readonly
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+            <div id="bmzbContent" class="bmzbContent"
+                 style="display:none; position: absolute;z-index: 99;margin-bottom: 10px;border: 1px solid #e6e6e6;background: #fff;width:400px;height:160px;overflow-y:scroll;overflow-x:auto;">
+                <ul id="bmzb_tree" class="ztree" style="margin-top:0; width:160px;"></ul>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="hidden" id="yxbz" name="yxbz" th:value="${yhxx.yxbz==null?'N':yhxx.yxbz}">
+                <input type="checkbox" lay-skin="switch" lay-filter="switch_zt" lay-text="有效|无效"
+                       th:checked="${yhxx.yxbz eq'Y'}">
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <input type="button" lay-submit lay-filter="yhxx_back_submit" id="yhxx_back_submit" value="确定">
+        </div>
+    </div>
+</div>
+<script th:src="@{/cssnjadmin/plugin/zTree_v3/js/jquery-1.4.4.min.js}"></script>
+<script th:src="@{/cssnjadmin/plugin/zTree_v3/js/jquery.ztree.core.js}"></script>
+<script>
+    layui.extend({
+        index: 'lib/index',
+        cssnj: 'common/cssnj'
+    }).use(['index', 'form', 'cssnj'], function () {
+        var admin = layui.admin
+            , form = layui.form
+            , table = layui.table
+            , cssnj = layui.cssnj;
+
+
+        var onClick = function onClick(e, treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("bmzb_tree"),
+                nodes = zTree.getSelectedNodes(),
+                label = "", value = "";
+            nodes.sort(function compare(a, b) {
+                return a.id - b.id;
+            });
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                label += nodes[i].mc + ",";
+                value += nodes[i].id + ",";
+            }
+            if (label.length > 0) {
+                label = label.substring(0, label.length - 1);
+                value = value.substring(0, value.length - 1);
+            }
+            $("#bmzb").attr("value", label);
+            $("#bmzbId").attr("value", value);
+            hideBmzbs();
+        }, showBmzbs = function showMenu() {
+            var bmzbObj = $("#bmzb");
+            var bmzbOffset = $("#bmzb").offset();
+            var bmzbContent = $("#bmzbContent");
+            bmzbContent.css({
+                left: bmzbOffset.left + "px",
+                top: bmzbOffset.top - bmzbContent.outerHeight() - 10 + "px"
+            }).slideDown("fast");
+
+            $("body").bind("mousedown", onBodyDown);
+        }, hideBmzbs = function hideMenu() {
+            $("#bmzbContent").fadeOut("fast");
+            $("body").unbind("mousedown", onBodyDown);
+        }, onBodyDown = function onBodyDown(event) {
+            if (!(event.target.id == "bmzb" || event.target.id == "bmzbContent" || $(event.target).parents("#bmzbContent").length > 0)) {
+                hideBmzbs();
+            }
+        }, setting = {
+            view: {
+                dblClickExpand: false
+            }, data: {
+                key: {
+                    name: "mc",
+                    url: "xUrl"
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "sjbmzbId",
+                    rootPId: null
+                }
+            }, callback: {
+                onClick: onClick
+            }
+        }, loadBmzbs = function () {
+            cssnj.req({
+                url: contextPath + '/xtgl/yhgl',
+                data: JSON.stringify({
+                    handle: 'loadBmzbs'
+                }),
+                done: function (res) {
+                    var zTree = $.fn.zTree.init($("#bmzb_tree"), setting, res.data.list);
+                    var bmzbIds = $("#bmzbId").val().split(',');
+                    for (var i = 0; i < bmzbIds.length; i++) {
+                        var node = zTree.getNodeByParam("id", bmzbIds[i], null);
+                        if (node != null) {
+                            zTree.selectNode(node);
+                            zTree.setting.callback.onClick(null, zTree.setting.treeId, node);
+                        }
+                    }
+                }
+            });
+        };
+        loadBmzbs();
+        $('#bmzb').bind('click', function () {
+            showBmzbs();
+        });
+
+        form.on('switch(switch_zt)', function (data) {
+            if (this.checked) {
+                $("#yxbz").val("Y");
+            } else {
+                $("#yxbz").val("N")
+            }
+        });
+
+    });
+</script>
+</body>
+</html>
